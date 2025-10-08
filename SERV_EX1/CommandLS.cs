@@ -6,7 +6,7 @@ using System.IO;
 
 namespace SERV_EX1
 {
-    internal class Program
+    internal class CommandLS
     {
         //Recuerda que lo que se le pasa a continuación del comando de consola se
         //recibe como array de strings en un parámetro del Main(string[] args).
@@ -39,11 +39,6 @@ namespace SERV_EX1
             {
                 Console.WriteLine("No existe el directorio");
             }
-        }
-
-        static void Main(string[] args)
-        {
-            createCommandLS(args);
         }
     }
 }
