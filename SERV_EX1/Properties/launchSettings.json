@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SERV_EX1(LS)": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\Hugo Montes\\Documents\\DataAccess\""
+    }
+  }
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualBasic;
 using System;
 using System.Drawing;
+using System.IO;
 
 namespace SERV_EX1
 {
@@ -17,10 +18,31 @@ namespace SERV_EX1
         //Diferenciará por colores y en los archivos además indicará el tamaño de los
         //mismos.
 
-
+        public static void createCommandLS(string[] args)
+        {
+            DirectoryInfo directoryToSearch = new DirectoryInfo(args[0]);
+            if (Directory.Exists(args[0]))
+            {
+                foreach (var directory in directoryToSearch.GetDirectories())
+                {   
+                    Console.WriteLine(directory);
+                    foreach (var file in directory.GetFiles())
+                    {
+                        Console.WriteLine(file + ", " + file.Length + "KB");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                    }
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No existe el directorio");
+            }
+        }
 
         static void Main(string[] args)
         {
+            createCommandLS(args);
         }
     }
 }
