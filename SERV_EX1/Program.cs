@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualBasic;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 
@@ -24,14 +25,14 @@ namespace SERV_EX1
             if (Directory.Exists(args[0]))
             {
                 foreach (var directory in directoryToSearch.GetDirectories())
-                {   
+                {
                     Console.WriteLine(directory);
+                    Console.ForegroundColor = ConsoleColor.Red;
                     foreach (var file in directory.GetFiles())
                     {
                         Console.WriteLine(file + ", " + file.Length + "KB");
-                        Console.ForegroundColor = ConsoleColor.Green;
                     }
-                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = directory is DirectoryInfo ? ConsoleColor.Green : ConsoleColor.Red;
                 }
             }
             else
