@@ -16,12 +16,18 @@ namespace SERV_EX1
         //cat myfile.txt
         //cat -n5 c:\windows\win.ini
 
-        public static void createCommandCat(String fileName, string[] args)
+        public static void createCommandCat(String fileName, string[] args) // cat[0] -n5[1] ruta[2]
         {
-            if (args[1] is null)
+            if (args.Length > 0)
             {
-                String a = Console.In.ReadLine();
-                Console.WriteLine(a);
+                StreamReader stReader = new(fileName);
+                //if (args[1])
+                //{
+
+                //}
+
+                string dataFile = stReader.ReadToEnd();
+                Console.WriteLine(dataFile);
             }
         }
     }

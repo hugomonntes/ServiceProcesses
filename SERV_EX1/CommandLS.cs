@@ -19,11 +19,11 @@ namespace SERV_EX1
         //Diferenciará por colores y en los archivos además indicará el tamaño de los
         //mismos.
 
-        public static void createCommandLS(string[] args)
+        public static void createCommandLS(string[] args) // TODO comprobar args y mover bucle
         {
-            DirectoryInfo directoryToSearch = new DirectoryInfo(args[0]);
-            if (Directory.Exists(args[0]))
+            if (args != null && Directory.Exists(args[0]))
             {
+                DirectoryInfo directoryToSearch = new DirectoryInfo(args[0]);
                 foreach (var directory in directoryToSearch.GetDirectories())
                 {
                     Console.WriteLine(directory);
