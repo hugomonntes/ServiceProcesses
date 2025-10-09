@@ -15,16 +15,17 @@ namespace SERV_EX1
         //Ejemplos:
         //cat myfile.txt
         //cat -n5 c:\windows\win.ini
-
-        public static void createCommandCat(String fileName, string[] args) // cat[0] -n5[1] ruta[2]
+        public static bool checkArgs(string args)
         {
-            if (args.Length > 0)
-            {
-                StreamReader stReader = new(fileName);
-                //if (args[1])
-                //{
+            return args.StartsWith("-n") && int.TryParse($"{args[2]}", out _);
+        }
 
-                //}
+        public static void createCommandCat(string[] args) // cat[0] -n50   [1] ruta[2]
+        {
+            if (checkArgs(args[1]))
+            {
+                StreamReader stReader = new(args[2]);
+
 
                 string dataFile = stReader.ReadToEnd();
                 Console.WriteLine(dataFile);
