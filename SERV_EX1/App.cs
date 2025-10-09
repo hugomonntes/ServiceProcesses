@@ -11,7 +11,7 @@ namespace SERV_EX1
         static void Main(string[] args)
         {
             //CommandLS.createCommandLS(args);
-            CommandCat.createCommandCat(args);
+            CommandCat.commandCat(args);
         }
     }
 }

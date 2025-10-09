@@ -15,26 +15,92 @@ namespace SERV_EX1
         //Ejemplos:
         //cat myfile.txt
         //cat -n5 c:\windows\win.ini
-        public static bool checkArgs(string args, out int number)
+        public static bool checkArgsModifierN(string arg, out int number)
         {
-            string[] splitedArgs = args.Split("-n");
-            return int.TryParse($"{splitedArgs[1]}", out number);
+            number = 0;
+            if (arg.StartsWith("-n"))
+            {
+                string numStr = arg.Substring(2);
+                if (int.TryParse(numStr, out int numberFormated))
+                {
+                    number = numberFormated;
+                    return true;
+                }
+            }
+            return false;
         }
 
-        public static void createCommandCat(string[] args) // -n50[0] ruta[1]
+        public static bool checkFileExists(string fileName)
         {
-            string dataFile = "";
-            int number;
-            if (args.Length >= 1)
+            return File.Exists(fileName);
+        }
+
+        public static void showFileContent(string fileName, int numLinesToShow)
+        {
+            if (checkFileExists(fileName))
             {
-                checkArgs(args[0], out number);
-                StreamReader stReader = new(args[1]);
-                for (int i = 0; i < number; i++)
+                using StreamReader reader = new(fileName);
+                int contador = 0;
+                string? linea;
+
+                while ((linea = reader.ReadLine()) != null && contador < numLinesToShow)
                 {
-                    dataFile += stReader.ReadLine();
+                    Console.WriteLine(linea);
+                    contador++;
                 }
-                Console.WriteLine(dataFile);
+
+                if (contador == 0)
+                {
+                    Console.WriteLine("El archivo está vacío");
+                }
             }
+        }
+
+        public static void showFullFile(string fileName) // En caso de que no me pase el modificador -n
+        {
+            if (checkFileExists(fileName))
+            {
+                using StreamReader reader = new(fileName);
+                string? linea;
+                while ((linea = reader.ReadLine()) != null)
+                {
+                    Console.WriteLine(linea);
+                }
+            }
+            else
+            {
+                Console.WriteLine("El archivo no existe");
+            }
+
+        }
+
+        public static void commandCat(string[] args) // -n50[0] ruta[1]
+        {
+            if (args.Length > 0)
+            {
+                if (checkArgsModifierN(args[0], out int numLineas))
+                {
+                    if (checkFileExists(args[1]))
+                    {
+                        string fileName = args[1];
+                        showFileContent(fileName, numLineas);
+                    }
+                    else
+                    {
+                        Console.WriteLine("El archivo no se encuentra");
+                    }
+                }
+                else
+                {
+                    string fileName = args[0];
+                    showFullFile(fileName);
+                }
+            }
+            else
+            {
+                Console.WriteLine("Usa así cat -nX ruta");
+            }
+
         }
     }
 }
