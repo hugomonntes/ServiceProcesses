@@ -15,19 +15,24 @@ namespace SERV_EX1
         //Ejemplos:
         //cat myfile.txt
         //cat -n5 c:\windows\win.ini
-        public static bool checkArgs(string args)
+        public static bool checkArgs(string args, out int number)
         {
-            return args.StartsWith("-n") && int.TryParse($"{args[2]}", out _);
+            string[] splitedArgs = args.Split("-n");
+            return int.TryParse($"{splitedArgs[1]}", out number);
         }
 
-        public static void createCommandCat(string[] args) // cat[0] -n50   [1] ruta[2]
+        public static void createCommandCat(string[] args) // -n50[0] ruta[1]
         {
-            if (checkArgs(args[1]))
+            string dataFile = "";
+            int number;
+            if (args.Length >= 1)
             {
-                StreamReader stReader = new(args[2]);
-
-
-                string dataFile = stReader.ReadToEnd();
+                checkArgs(args[0], out number);
+                StreamReader stReader = new(args[1]);
+                for (int i = 0; i < number; i++)
+                {
+                    dataFile += stReader.ReadLine();
+                }
                 Console.WriteLine(dataFile);
             }
         }

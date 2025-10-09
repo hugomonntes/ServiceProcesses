@@ -10,8 +10,8 @@ namespace SERV_EX1
     {
         static void Main(string[] args)
         {
-            CommandLS.createCommandLS(args);
-            //CommandCat.createCommandCat("C:\\Users\\Hugo Montes\\Documents\\DataAccess\\a.txt", args);
+            //CommandLS.createCommandLS(args);
+            CommandCat.createCommandCat(args);
         }
     }
 }
