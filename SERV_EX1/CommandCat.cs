@@ -6,11 +6,11 @@
         {
             if (args.Length > 0)
             {
-                if (GeneralCommands.checkArgsModifier(args[0], out int numLineas, "-n"))
+                if (GeneralMethods.checkArgsModifier(args[0], out int numLineas, "-n"))
                 {
-                    if (GeneralCommands.checkFileExists(args[1]))
+                    if (GeneralMethods.checkFileExists(args[1]))
                     {
-                        GeneralCommands.showFileContent(args[1], numLineas);
+                        GeneralMethods.showFileContent(args[1], numLineas);
                     }
                     else
                     {
@@ -20,7 +20,7 @@
                 else
                 {
                     string fileName = args[0];
-                    GeneralCommands.showFullFile(fileName);
+                    GeneralMethods.showFullFile(fileName);
                 }
             }
             else

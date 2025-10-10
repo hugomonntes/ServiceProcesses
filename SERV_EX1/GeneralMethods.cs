@@ -46,7 +46,7 @@ namespace SERV_EX1
 
             if (contador == 0)
             {
-                Console.WriteLine("El archivo está vacío");
+                Console.WriteLine("El archivo esta vacio");
             }
 
         }

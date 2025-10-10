@@ -14,7 +14,7 @@ namespace SERV_EX1
         //newfile myfile.txt “This text goes in the myfile.”
         //newfile -a miarchivo.txt “And this one is added.”
 
-        public static void crearCommandNewFile(string[] args)
+        public static void createCommandNewFile(string[] args) // Me falta comprobar numero de args 
         {
             if (GeneralMethods.checkArgsModifier(args[0], out int number, "-a"))
             {

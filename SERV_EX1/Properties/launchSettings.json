@@ -2,7 +2,7 @@
   "profiles": {
     "SERV_EX1(LS)": {
       "commandName": "Project",
-      "commandLineArgs": "-n3 \"C:\\Users\\34674\\Desktop\\a.txt\""
+      "commandLineArgs": "\"C:\\Users\\34674\\Desktop\\a.txt\" \"añademe\""
     }
   }
 }
