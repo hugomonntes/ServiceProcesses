@@ -6,19 +6,28 @@ using System.Threading.Tasks;
 
 namespace SERV_EX1
 {
-    public class CommandNewFile
+    public class CommandNF
     {
         //3. Comando newfile: Crea un archivo con el texto que haya a continuación.
         //Si justo tras el comando se pone -a, añade el texto en vez de sobreescribirlo.
         //Ejemplos:
         //newfile myfile.txt “This text goes in the myfile.”
         //newfile -a miarchivo.txt “And this one is added.”
-        
+
         public static void crearCommandNewFile(string[] args)
         {
-            if (GeneralCommands.checkArgsModifier(args[0], out int number, "-a"))
+            if (GeneralMethods.checkArgsModifier(args[0], out int number, "-a"))
             {
-                GeneralCommands.checkFileExists(args[1]);
+                if (GeneralMethods.checkFileExists(args[1]))
+                {
+                    GeneralMethods.writeFile(args[1], args[2], true);
+                }
+            } else
+            {
+                if (GeneralMethods.checkFileExists(args[0]))
+                {
+                    GeneralMethods.writeFile(args[0], args[1], false);
+                }
             }
         }
     }
