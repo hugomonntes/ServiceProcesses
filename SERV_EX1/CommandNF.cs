@@ -16,17 +16,21 @@ namespace SERV_EX1
 
         public static void createCommandNewFile(string[] args) // Me falta comprobar numero de args 
         {
-            if (GeneralMethods.checkArgsModifier(args[0], out int number, "-a"))
+            if (args.Length > 0)
             {
-                if (GeneralMethods.checkFileExists(args[1]))
+                if (GeneralMethods.checkArgsModifier(args[0], out int number, "-a"))
                 {
-                    GeneralMethods.writeFile(args[1], args[2], true);
+                    if (GeneralMethods.checkFileExists(args[1]))
+                    {
+                        GeneralMethods.writeFile(args[1], args[2], true);
+                    }
                 }
-            } else
-            {
-                if (GeneralMethods.checkFileExists(args[0]))
+                else
                 {
-                    GeneralMethods.writeFile(args[0], args[1], false);
+                    if (GeneralMethods.checkFileExists(args[0]))
+                    {
+                        GeneralMethods.writeFile(args[0], args[1], false);
+                    }
                 }
             }
         }
