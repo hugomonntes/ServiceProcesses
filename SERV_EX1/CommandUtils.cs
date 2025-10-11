@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SERV_EX1
 {
-    public class GeneralMethods
+    public class CommandUtils
     {
         public static bool checkArgsModifier(string arg, out int number, string modInit)
         {

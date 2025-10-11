@@ -15,21 +15,21 @@ namespace SERV_EX1
         //newfile -a miarchivo.txt “And this one is added.”
 
         public static void createCommandNewFile(string[] args) // Me falta comprobar numero de args 
-        {
+        {   
             if (args.Length > 0)
             {
-                if (GeneralMethods.checkArgsModifier(args[0], out int number, "-a"))
+                if (CommandUtils.checkArgsModifier(args[0], out int number, "-a"))
                 {
-                    if (GeneralMethods.checkFileExists(args[1]))
+                    if (CommandUtils.checkFileExists(args[1]))
                     {
-                        GeneralMethods.writeFile(args[1], args[2], true);
+                        CommandUtils.writeFile(args[1], args[2], true);
                     }
                 }
                 else
                 {
-                    if (GeneralMethods.checkFileExists(args[0]))
+                    if (CommandUtils.checkFileExists(args[0]))
                     {
-                        GeneralMethods.writeFile(args[0], args[1], false);
+                        CommandUtils.writeFile(args[0], args[1], false);
                     }
                 }
             }
