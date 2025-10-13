@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\InterfaceDevelopment\DI_TM123\DI_EX7\DI_EX7.csproj" />
+  </ItemGroup>
+
 </Project>

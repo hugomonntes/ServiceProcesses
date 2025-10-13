@@ -7,6 +7,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SERV_EX(ARCHIVOS_DELEGADOS_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SERV_EX1", "SERV_EX1\SERV_EX1.csproj", "{B6D43222-9C83-41D3-BBF8-2F6A9C6B4E12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DI_EX7", "..\InterfaceDevelopment\DI_TM123\DI_EX7\DI_EX7.csproj", "{1D1C2AC9-137C-BDBA-F9EF-8E58FFD7A431}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SERV_EX2", "SERV_EX2\SERV_EX2.csproj", "{DD2774F5-8E80-461A-AAA2-36588CB67C8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +21,21 @@ Global
 		{B6D43222-9C83-41D3-BBF8-2F6A9C6B4E12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6D43222-9C83-41D3-BBF8-2F6A9C6B4E12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6D43222-9C83-41D3-BBF8-2F6A9C6B4E12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D1C2AC9-137C-BDBA-F9EF-8E58FFD7A431}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D1C2AC9-137C-BDBA-F9EF-8E58FFD7A431}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D1C2AC9-137C-BDBA-F9EF-8E58FFD7A431}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D1C2AC9-137C-BDBA-F9EF-8E58FFD7A431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD2774F5-8E80-461A-AAA2-36588CB67C8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD2774F5-8E80-461A-AAA2-36588CB67C8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD2774F5-8E80-461A-AAA2-36588CB67C8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD2774F5-8E80-461A-AAA2-36588CB67C8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B6D43222-9C83-41D3-BBF8-2F6A9C6B4E12} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{1D1C2AC9-137C-BDBA-F9EF-8E58FFD7A431} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6A9A22A5-7B3F-4FC7-9982-01946DE4462A}
