@@ -25,7 +25,7 @@
             }
             else
             {
-                Console.WriteLine("Usa así: cat [-nX] ruta");
+                Console.WriteLine("Pon este formato cat [-nNumero] ruta");
             }
         }
     }
