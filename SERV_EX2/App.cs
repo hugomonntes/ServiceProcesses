@@ -3,11 +3,11 @@ using System;
 
 namespace SERV_EX2
 {
-    public class Program
+    public class App
     {
         static void Main(string[] args)
         {
-            List<Astro> coleccionDeAstros = DI_EX7.Program.coleccionAstros;
+            List<Astro> coleccionDeAstros = DI_EX7.Program.coleccionDeAstros;
 
         }
     }

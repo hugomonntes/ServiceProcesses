@@ -11,10 +11,6 @@ namespace SERV_EX1
         public static bool checkArgsModifier(string arg, out int number, string modInit)
         {
             number = 0;
-            if (arg.Length == 2 && arg.Equals(modInit)) // Lo pongo en caso de que el modifcaddor sea sin numero
-            {
-                return true;
-            }
             if (arg.StartsWith(modInit))
             {
                 string numStr = arg.Substring(2);
@@ -25,11 +21,6 @@ namespace SERV_EX1
                 }
             }
             return false;
-        }
-
-        public static bool checkFileExists(string fileName)
-        {
-            return File.Exists(fileName);
         }
 
         public static void showFileContent(string fileName, int numLinesToShow)
@@ -54,11 +45,7 @@ namespace SERV_EX1
         public static void showFullFile(string fileName) // En caso de que no me pase el modificador -n
         {
             using StreamReader reader = new(fileName);
-            string? linea;
-            while ((linea = reader.ReadLine()) != null)
-            {
-                Console.WriteLine(linea);
-            }
+            reader.ReadToEnd();
         }
 
         public static void writeFile(string fileName, string textToAdd, bool appendMode)
@@ -66,6 +53,7 @@ namespace SERV_EX1
             using (StreamWriter writer = new StreamWriter(fileName, append: appendMode)) // Creo que tengo que controlar excep por si no se encuentra el file
             {
                 writer.WriteLine(textToAdd);
+                Console.WriteLine("Texto añadido");
             }
         }
     }

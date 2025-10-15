@@ -4,28 +4,28 @@
     {
         public static void commandCat(string[] args)
         {
-            if (args.Length > 0)
+            try
             {
-                if (CommandUtils.checkArgsModifier(args[0], out int numLineas, "-n"))
+                if (args.Length == 2)
                 {
-                    if (CommandUtils.checkFileExists(args[1]))
+                    if (CommandUtils.checkArgsModifier(args[0], out int numLineas, "-n"))
                     {
                         CommandUtils.showFileContent(args[1], numLineas);
                     }
                     else
                     {
-                        Console.WriteLine("El archivo no se encuentra");
+                        Console.WriteLine("Pon este formato cat -nNumero ruta");
                     }
                 }
-                else
+                else if (args.Length == 1)
                 {
                     string fileName = args[0];
                     CommandUtils.showFullFile(fileName);
                 }
             }
-            else
+            catch (IOException)
             {
-                Console.WriteLine("Pon este formato cat [-nNumero] ruta");
+                Console.WriteLine("Error de archivo!");
             }
         }
     }
