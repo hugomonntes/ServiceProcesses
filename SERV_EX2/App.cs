@@ -7,7 +7,7 @@ namespace SERV_EX2
     {
         static void Main(string[] args)
         {
-            List<Astro> aa = DI_EX7.Program.coleccionDeAstros;
+            //List<Astro> aa = DI_EX7.Program.coleccionDeAstros;
 
         }
     }
