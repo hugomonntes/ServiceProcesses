@@ -13,10 +13,21 @@ namespace SERV_EX2
             return double.TryParse(Console.ReadLine(), out double userNumber) ? userNumber : 0.0;
         }
 
+        public string requestOperationType()
+        {
+            string option;
+            do
+            {
+                Console.Write("Quieres el cuadrado o el cubo? (Cuadrado / Cubo): ");
+                option = Console.ReadLine().Trim().ToLower();
+            }
+            while (option != "cuadrado" && option != "cubo");
+            return option;
+        }
 
         static void Main(string[] args)
         {
-            
+
         }
     }
 }
