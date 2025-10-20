@@ -5,11 +5,12 @@ namespace SERV_EX2
 {
     public class App
     {
-        static void Main(string[] args)
+        static List<Astro> astros = DI_EX7.Program.coleccionDeAstros;
+        public void readFile(List<Astro> astros)
         {
-            //List<Astro> aa = DI_EX7.Program.coleccionDeAstros;
 
         }
+
     }
 }
 
