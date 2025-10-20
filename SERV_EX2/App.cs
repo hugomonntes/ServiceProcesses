@@ -5,22 +5,35 @@ namespace SERV_EX2
 {
     public class App
     {
-        static List<Astro> astros = DI_EX7.Program.coleccionDeAstros;
-        public void readFile(String fileName) // Devolver Alamacenaje 
+        static List<Astro> astros = DI_EX7.Program.coleccionAstros;
+        public void readFile(string fileName) // Devolver Alamacenaje 
         {
-            StreamReader sr = new StreamReader(astro.ToString());
+            using (StreamReader sr = new StreamReader(fileName))
+            {
+                sr.ReadLine();
+            }
         }
 
-        public void writeFile(List<Astro> astros)
+        public static void writeFile(List<Astro> astros)
         {
-            foreach (Astro astro in astros)
+            try
             {
-                StreamWriter sw = new StreamWriter(astro.ToString());
+                foreach (Astro astro in astros)
+                {
+                    using (StreamWriter sw = new StreamWriter("C:\\astros.txt"))
+                    {
+                        sw.WriteLine(astro.ToString());
+                    }
+                }
             }
+            catch (IOException)
+            {
+                Console.WriteLine("naaaa");
+            }
+
         }
     }
 }
-//https://prod.liveshare.vsengsaas.visualstudio.com/join?1E6EA7C004029BC296B70944E11600B45342
 //Ampliar el programa gestor de Astros (Ejercicio 8 de los temas 1, 2
 //y 3 genéricos) de forma que guarde la información de la base de
 //datos que se está creando.
