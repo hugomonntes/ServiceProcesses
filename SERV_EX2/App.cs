@@ -6,11 +6,21 @@ namespace SERV_EX2
     public class App
     {
         static List<Astro> astros = DI_EX7.Program.coleccionDeAstros;
-        public void readFile(List<Astro> astros)
+        public void readFile(List<Astro> astros) // Devolver Alamacenaje 
         {
-
+            foreach (Astro astro in astros)
+            {
+                StreamReader sr = new StreamReader(astro.ToString());
+            }
         }
 
+        public void writeFile(List<Astro> astros)
+        {
+            foreach (Astro astro in astros)
+            {
+                StreamWriter sw = new StreamWriter(astro.ToString());
+            }
+        }
     }
 }
 
