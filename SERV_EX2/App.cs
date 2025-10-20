@@ -6,12 +6,9 @@ namespace SERV_EX2
     public class App
     {
         static List<Astro> astros = DI_EX7.Program.coleccionDeAstros;
-        public void readFile(List<Astro> astros) // Devolver Alamacenaje 
+        public void readFile(String fileName) // Devolver Alamacenaje 
         {
-            foreach (Astro astro in astros)
-            {
-                StreamReader sr = new StreamReader(astro.ToString());
-            }
+            StreamReader sr = new StreamReader(astro.ToString());
         }
 
         public void writeFile(List<Astro> astros)
@@ -23,7 +20,7 @@ namespace SERV_EX2
         }
     }
 }
-
+//https://prod.liveshare.vsengsaas.visualstudio.com/join?1E6EA7C004029BC296B70944E11600B45342
 //Ampliar el programa gestor de Astros (Ejercicio 8 de los temas 1, 2
 //y 3 genéricos) de forma que guarde la información de la base de
 //datos que se está creando.
