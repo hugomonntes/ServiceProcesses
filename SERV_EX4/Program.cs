@@ -15,7 +15,7 @@ namespace SERV_EX4
             //• Saber de si hay algún aprobado(Si existe o no) en notas.
             Console.WriteLine($"Hay aprobados: {notas.Any(n => n >= 5)}");
             //• Mostrar los aprobados de notas.
-            int[] notasAprobadas = notas.Where(n => n >= 5).ToArray();
+            int[] notasAprobadas = notas.Where(n => n >= 5).ToArray();//FindAll
             Array.ForEach(notasAprobadas, n => Console.WriteLine($"Aprobados con un {n}"));
             //• Indicar la posición en el array del último aprobado
             Console.WriteLine($"Ultimo aprobado en la posicion:  {Array.FindLastIndex(notas, n => n >= 5)}");
@@ -29,7 +29,7 @@ namespace SERV_EX4
             //• Mostrar todas las palabras en mayúsculas.
             Array.ForEach(palabras, palabra => Console.WriteLine($"Palabra en mayus: {palabra.ToUpper()}"));
             //• Indica la posición de la primera palabra que empiece por E
-            Console.WriteLine($"La primera palabra que empieza por E esta en la posicion: {Array.IndexOf(palabras,palabras.First(palabra => palabra.StartsWith("E")))}");
+            Console.WriteLine($"La primera palabra que empieza por E esta en la posicion: {Array.Find(palabras ,palabra => palabra.StartsWith("E"))}");
 
         }
     }
