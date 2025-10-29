@@ -20,24 +20,31 @@ namespace SERV_HILOS_EX1
         //b) Las funciones de hilos serán expresiones lambda(si quieres y los ves claro haz
         //ya directamente este apartado).
 
-        public static void counter()
-        {
-            for (int i = 1; i <= 500000; i++)
-            {
-                Console.SetCursorPosition(1, 1);
-                Console.WriteLine(i);
-            }
-        }
-
-        public static void createThreads()
-        {
-            Thread thread1 = new Thread(counter);
-            thread1.Start();
-        }
-
         static void Main(string[] args)
         {
-            createThreads();
+            int counter = 0;
+
+            Thread thread1 = new Thread((object num) =>
+            {
+                int num1 = (int)num;
+                while (num1 >= -100 && num1 <= 100)
+                {
+                    Console.SetCursorPosition(1, 1);
+                    Console.WriteLine(num1++);
+                }
+            });
+            thread1.Start(counter);
+
+            Thread thread2 = new Thread((object num) =>
+            {
+                int num1 = (int)num;
+                while (num1 >= -100 && num1 <= 100)
+                {
+                    Console.SetCursorPosition(1, 20);
+                    Console.WriteLine(num1--);
+                }
+            });
+            thread2.Start(counter);
         }
     }
 }
