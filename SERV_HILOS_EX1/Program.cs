@@ -26,7 +26,7 @@ namespace SERV_HILOS_EX1
 
             Thread thread1 = new Thread(() =>
             {
-                while (counter >= -100 && counter <= 100)
+                while (counter > -500 && counter < 500)
                 {
                     counter++;
                 }
@@ -35,13 +35,13 @@ namespace SERV_HILOS_EX1
 
             Thread thread2 = new Thread(() =>
             {
-                while (counter >= -100 && counter <= 100)
+                while (counter > -500 && counter < 500)
                 {
                     counter--;
                 }
             });
-            Console.WriteLine(counter);
             thread2.Start();
+            Console.WriteLine(counter);
         }
     }
 }
