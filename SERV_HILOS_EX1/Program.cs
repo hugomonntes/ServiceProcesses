@@ -24,27 +24,24 @@ namespace SERV_HILOS_EX1
         {
             int counter = 0;
 
-            Thread thread1 = new Thread((object num) =>
+            Thread thread1 = new Thread(() =>
             {
-                int num1 = (int)num;
-                while (num1 >= -100 && num1 <= 100)
+                while (counter >= -100 && counter <= 100)
                 {
-                    Console.SetCursorPosition(1, 1);
-                    Console.WriteLine(num1++);
+                    counter++;
                 }
             });
-            thread1.Start(counter);
+            thread1.Start();
 
-            Thread thread2 = new Thread((object num) =>
+            Thread thread2 = new Thread(() =>
             {
-                int num1 = (int)num;
-                while (num1 >= -100 && num1 <= 100)
+                while (counter >= -100 && counter <= 100)
                 {
-                    Console.SetCursorPosition(1, 20);
-                    Console.WriteLine(num1--);
+                    counter--;
                 }
             });
-            thread2.Start(counter);
+            Console.WriteLine(counter);
+            thread2.Start();
         }
     }
 }
