@@ -26,22 +26,22 @@ namespace SERV_HILOS_EX1
 
             Thread thread1 = new Thread(() =>
             {
-                while (counter > -500 && counter < 500)
+                while (counter > -50 && counter < 50)
                 {
                     counter++;
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("+ " + counter);
+                    Console.WriteLine("threadSuma " + counter);
                 }
             });
             thread1.Start();
 
             Thread thread2 = new Thread(() =>
             {
-                while (counter > -500 && counter < 500)
+                while (counter > -50 && counter < 50)
                 {
                     counter--;
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("- " + counter);
+                    Console.WriteLine("threadResta " + counter);
                 }
             });
             thread2.Start();
