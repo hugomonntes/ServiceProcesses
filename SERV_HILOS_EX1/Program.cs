@@ -22,28 +22,53 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
+            bool isFree = true;
+            bool getLock() // Cambiar por Lock, no hacer locks caseros
+            {
+                if (isFree)
+                {
+                    isFree = false;
+                    return true;
+                }
+                return false;
+            }
+            void releaseLock()
+            {
+                isFree = true;
+            }
             int counter = 0;
-
             Thread thread1 = new Thread(() =>
             {
                 while (counter > -50 && counter < 50)
                 {
-                    counter++;
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("threadSuma " + counter);
+                    if (getLock())
+                    {
+                        // Incio Operación Atómica
+                        counter++;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("threadSuma " + counter);
+                        releaseLock();
+                        // Fin Operación Atómica
+                    }
                 }
             });
-            thread1.Start();
 
             Thread thread2 = new Thread(() =>
             {
                 while (counter > -50 && counter < 50)
                 {
-                    counter--;
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("threadResta " + counter);
+                    if (getLock())
+                    {
+                        // Incio Operación Atómica
+                        counter--;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("threadResta " + counter);
+                        releaseLock();
+                        // Fin Operación Atómica
+                    }
                 }
             });
+            thread1.Start();
             thread2.Start();
             //Console.WriteLine(counter);
         }
