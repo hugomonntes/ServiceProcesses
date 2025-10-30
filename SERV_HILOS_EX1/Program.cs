@@ -22,55 +22,48 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
-            bool isFree = true;
-            bool getLock() // Cambiar por Lock, no hacer locks caseros
-            {
-                if (isFree)
-                {
-                    isFree = false;
-                    return true;
-                }
-                return false;
-            }
-            void releaseLock()
-            {
-                isFree = true;
-            }
+            object counterLock = new object();
             int counter = 0;
+            bool isFinished = false;
             Thread thread1 = new Thread(() =>
             {
-                while (counter > -50 && counter < 50)
+                while (!isFinished && counter < 50)
                 {
-                    if (getLock())
+                    lock (counterLock)
                     {
                         // Incio Operación Atómica
                         counter++;
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("threadSuma " + counter);
-                        releaseLock();
                         // Fin Operación Atómica
+                        if (counter == -50 || counter == 50)
+                        {
+                            isFinished = true;
+                        }
                     }
                 }
             });
 
             Thread thread2 = new Thread(() =>
             {
-                while (counter > -50 && counter < 50)
+                while (!isFinished && counter > -50)
                 {
-                    if (getLock())
+                    lock (counterLock)
                     {
                         // Incio Operación Atómica
                         counter--;
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("threadResta " + counter);
-                        releaseLock();
                         // Fin Operación Atómica
+                        if (counter == -50 || counter == 50)
+                        {
+                            isFinished = true;
+                        }
                     }
                 }
             });
             thread1.Start();
             thread2.Start();
-            //Console.WriteLine(counter);
         }
     }
 }
