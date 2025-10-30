@@ -29,6 +29,7 @@ namespace SERV_HILOS_EX1
                 while (counter > -500 && counter < 500)
                 {
                     counter++;
+                    Console.WriteLine(counter);
                 }
             });
             thread1.Start();
@@ -38,10 +39,11 @@ namespace SERV_HILOS_EX1
                 while (counter > -500 && counter < 500)
                 {
                     counter--;
+                    Console.WriteLine(counter);
                 }
             });
             thread2.Start();
-            Console.WriteLine(counter);
+            //Console.WriteLine(counter);
         }
     }
 }
