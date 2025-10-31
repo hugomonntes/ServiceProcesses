@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.Intrinsics.X86;
@@ -23,11 +24,12 @@ namespace SERV_HILOS_EX1
         //Nota: De cara a realizar pruebas de este juego, se recomienda quitar la
         //aleatoriedad temporalmente para forzar a que varios caballos lleguen a un tiempo y
         //ver que solo uno es el que “cruza” la meta.
-        public static void initThreads(Thread[] horsesThreads,int numThreads)
-        {   
+        public static void initThreads(Thread[] horsesThreads, int numThreads)
+        {
             for (int i = 0; i < numThreads; i++)
             {
-                horsesThreads[i] = new Thread();
+                horsesThreads[i] = new Thread(initRace);
+                horsesThreads[i].Start(5);
             }
         }
 
@@ -39,8 +41,7 @@ namespace SERV_HILOS_EX1
 
         public static void initRace(object randomNumber)
         {
-            int startingLine = 0;
-
+            
         }
 
         static void Main(string[] args)
