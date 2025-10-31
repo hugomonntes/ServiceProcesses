@@ -27,7 +27,7 @@ namespace SERV_HILOS_EX1
             bool isFinished = false;
             Thread thread1 = new Thread(() =>
             {
-                while (!isFinished && counter < 50)
+                while (!isFinished)
                 {
                     lock (counterLock)
                     {
@@ -43,10 +43,10 @@ namespace SERV_HILOS_EX1
                     }
                 }
             });
-
+            
             Thread thread2 = new Thread(() =>
             {
-                while (!isFinished && counter > -50)
+                while (!isFinished)
                 {
                     lock (counterLock)
                     {
