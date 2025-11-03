@@ -2,6 +2,13 @@
 {
     internal class Program
     {
+        public delegate void MyDelegate();
+
+        public static void menuGenerator(String[] optionsName, MyDelegate[] delegates)
+        {
+
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
@@ -9,10 +16,10 @@
     }
 }
 
-//a) Desarrolla una función para la realización de cualquier menú mediante
-//delegados. Dicha función se denominará MenuGenerator y tendrá dos
-//parámetros: El primero un vector de strings con los nombres de las opciones.
-//El segundo un vector de delegados (hazlos que devuelvan void y sin
-//parámetros y el nombre del delegado que sea MyDelegate) que serán las
-//funciones que correspondan a cada opción del menú.
+//Al ejecutar MenuGenerator saldrá un menú clásico con las opciones indicadas
+//por el primer vector y una última opción Exit (independientemente del número
+//de entradas del menú). Si se introduce una opción no válida (fuera del rango)
+//dará un mensaje de error y vuelve a pedirlo. Solo finaliza el menú si se
+//selecciona la última opción, que será la de salir.
+
 
