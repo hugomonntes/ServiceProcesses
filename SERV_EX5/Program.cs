@@ -6,7 +6,7 @@
 
         public static void menuGenerator(String[] optionsName, MyDelegate[] delegates)
         {
-
+            
         }
 
         static void Main(string[] args)
