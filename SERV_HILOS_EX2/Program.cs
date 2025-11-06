@@ -8,7 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SERV_HILOS_EX1
 {
-    internal class Program
+    internal class Program // TODO cambiar list por array
     {
         //Realiza en consola el juego de carreras de caballos con al menos 5 caballos(haz
         //un array de hilos) pero teniendo en cuenta que ahora cada caballo es un objeto de
@@ -24,12 +24,16 @@ namespace SERV_HILOS_EX1
         //Nota: De cara a realizar pruebas de este juego, se recomienda quitar la
         //aleatoriedad temporalmente para forzar a que varios caballos lleguen a un tiempo y
         //ver que solo uno es el que “cruza” la meta.
-        public static void initThreads(Thread[] horsesThreads, int numThreads)
+        public static void initThreads(List<Thread> horsesThreads, int numThreads, int randomNumber)
         {
+            int counter = 0;
             for (int i = 0; i < numThreads; i++)
             {
-                horsesThreads[i] = new Thread(initRace);
-                horsesThreads[i].Start(5);
+                horsesThreads.Add(new Thread(() =>
+                {
+                    counter += randomNumber;
+                    Console.WriteLine(counter);
+                }));
             }
         }
 
@@ -39,14 +43,10 @@ namespace SERV_HILOS_EX1
             return randomNumber.Next(1, limit + 1);
         }
 
-        public static void initRace(object randomNumber)
-        {
-            
-        }
-
         static void Main(string[] args)
         {
-
+            List<Thread> horsesThreads = new List<Thread>();
+            initThreads(horsesThreads, 5, getRandomNumber(10));
         }
     }
 }

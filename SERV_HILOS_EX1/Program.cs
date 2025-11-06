@@ -30,7 +30,7 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (counter == -50 || counter == 50)
+                        if (counter == -100 || counter == 100)
                         {
                             isFinished = true;
                         }
@@ -52,7 +52,7 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (counter == -50 || counter == 50)
+                        if (counter == -100 || counter == 100)
                         {
                             isFinished = true;
                         }
