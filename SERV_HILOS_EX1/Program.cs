@@ -24,6 +24,7 @@ namespace SERV_HILOS_EX1
             object counterLock = new object();
             int counter = 0;
             bool isFinished = false;
+            string winner = "";
             Thread thread1 = new Thread(() =>
             {
                 while (!isFinished)
@@ -33,6 +34,7 @@ namespace SERV_HILOS_EX1
                         if (counter == -100 || counter == 100)
                         {
                             isFinished = true;
+                            winner = "Thread Suma";
                         }
                         if (!isFinished)
                         {
@@ -55,6 +57,7 @@ namespace SERV_HILOS_EX1
                         if (counter == -100 || counter == 100)
                         {
                             isFinished = true;
+                            winner = "Thread Resta";
                         }
                         if (!isFinished)
                         {
@@ -69,6 +72,9 @@ namespace SERV_HILOS_EX1
             });
             thread1.Start();
             thread2.Start();
+            thread1.Join();
+            thread2.Join();
+            Console.WriteLine($"Fin del programa. Ganador: {winner}");
         }
     }
 }
