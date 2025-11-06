@@ -18,7 +18,7 @@ namespace SERV_HILOS_EX1
         //El Main, una vez que lanza los hilos, se queda en espera hasta que ambos hilos
         //finalizan, luego informa de cual ha ganado.
 
-
+        
         static void Main(string[] args)
         {
             object counterLock = new object();

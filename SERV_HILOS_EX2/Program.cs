@@ -49,13 +49,15 @@ namespace SERV_HILOS_EX1
         static void Main(string[] args)
         {
             Thread[] horsesThreads = new Thread[5];
+            int[] a = new int[10];
             int counter = 0;
             for (int i = 0; i < horsesThreads.Length; i++)
             {
+                Console.WriteLine(counter += getRandomNumber(5));
                 horsesThreads[i] = new Thread(() =>
                 {
                     counter += getRandomNumber(5);
-                    Console.WriteLine(counter);
+                    Console.WriteLine("" + counter);
                 });
             }
         }

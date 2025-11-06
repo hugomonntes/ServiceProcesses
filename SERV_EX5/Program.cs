@@ -6,7 +6,7 @@ namespace SERV_EX5
     {
         public delegate void MyDelegate();
 
-        public static bool menuGenerator(String[] optionsName, MyDelegate[] functions)
+        public static bool menuGenerator(String[] optionsName, MyDelegate[] functions)//DEvolver false si hay problema. Mejorar comprobaciones. Mensajes de error.
         {
             int optionSelected;
             if (optionsName.Length == functions.Length)
@@ -46,11 +46,13 @@ namespace SERV_EX5
         }
         static void Main(string[] args)
         {
-            menuGenerator(new string[] { "Op1", "Op2", "Op3" }, 
+            menuGenerator(new string[] { "Op1", "Op2", "Op3", "op4" }, 
             new MyDelegate[] { 
             () => Console.WriteLine("A"),
             () => Console.WriteLine("B"),
-            () => Console.WriteLine("C")
+            () => Console.WriteLine("C"),
+            () => Console.WriteLine("D"),
+
             });
         }
     }
