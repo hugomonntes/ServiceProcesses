@@ -17,8 +17,7 @@ namespace SERV_HILOS_EX1
         //setCursorPosition.
         //El Main, una vez que lanza los hilos, se queda en espera hasta que ambos hilos
         //finalizan, luego informa de cual ha ganado.
-        //b) Las funciones de hilos serán expresiones lambda(si quieres y los ves claro haz
-        //ya directamente este apartado).
+
 
         static void Main(string[] args)
         {
@@ -31,33 +30,39 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        // Incio Operación Atómica
-                        counter++;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine("threadSuma " + counter);
-                        // Fin Operación Atómica
                         if (counter == -50 || counter == 50)
                         {
                             isFinished = true;
                         }
+                        if (!isFinished)
+                        {
+                            // Incio Operación Atómica
+                            counter++;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("threadSuma " + counter);
+                            // Fin Operación Atómica
+                        }
                     }
                 }
             });
-            
+
             Thread thread2 = new Thread(() =>
             {
                 while (!isFinished)
                 {
                     lock (counterLock)
                     {
-                        // Incio Operación Atómica
-                        counter--;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("threadResta " + counter);
-                        // Fin Operación Atómica
                         if (counter == -50 || counter == 50)
                         {
                             isFinished = true;
+                        }
+                        if (!isFinished)
+                        {
+                            // Incio Operación Atómica
+                            counter--;
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("threadResta " + counter);
+                            // Fin Operación Atómica
                         }
                     }
                 }
@@ -67,3 +72,6 @@ namespace SERV_HILOS_EX1
         }
     }
 }
+
+// Si un hilo acaba el otro aún da una vulet más.
+//- No haces esta parte del enunciado:  "//El Main, una vez que lanza los hilos, se queda en espera hasta que ambos hilos finalizan, luego informa de cual ha ganado."
