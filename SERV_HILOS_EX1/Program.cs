@@ -18,7 +18,7 @@ namespace SERV_HILOS_EX1
         //El Main, una vez que lanza los hilos, se queda en espera hasta que ambos hilos
         //finalizan, luego informa de cual ha ganado.
 
-        
+
         static void Main(string[] args)
         {
             object counterLock = new object();
@@ -31,19 +31,21 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (counter == -100 || counter == 100)
+                        if (isFinished)
+                        {
+                            break;
+                        }
+
+                        if (counter >= 500)
                         {
                             isFinished = true;
-                            winner = "Thread Suma";
+                            winner = "Thread Suma (verde)";
+                            break;
                         }
-                        if (!isFinished)
-                        {
-                            // Incio Operación Atómica
-                            counter++;
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("threadSuma " + counter);
-                            // Fin Operación Atómica
-                        }
+
+                        counter++;
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"threadSuma -> {counter}");
                     }
                 }
             });
@@ -54,19 +56,21 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (counter == -100 || counter == 100)
+                        if (isFinished)
+                        {
+                            break;
+                        }
+
+                        if (counter <= -500)
                         {
                             isFinished = true;
-                            winner = "Thread Resta";
+                            winner = "Thread Resta (rojo)";
+                            break;
                         }
-                        if (!isFinished)
-                        {
-                            // Incio Operación Atómica
-                            counter--;
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("threadResta " + counter);
-                            // Fin Operación Atómica
-                        }
+
+                        counter--;
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"threadResta -> {counter}");
                     }
                 }
             });
