@@ -34,6 +34,7 @@ namespace SERV_HILOS_EX1
                         if (counter == -50 || counter == 50)
                         {
                             isFinished = true;
+                            winner = "Hilo suma";
                         }
                         if (!isFinished)
                         {
@@ -41,7 +42,6 @@ namespace SERV_HILOS_EX1
                             counter++;
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("threadSuma " + counter);
-                            winner = "Hilo suma";
                             // Fin Operación Atómica
                         }
                     }
@@ -57,6 +57,7 @@ namespace SERV_HILOS_EX1
                         if (counter == -50 || counter == 50)
                         {
                             isFinished = true;
+                            winner = "Hilo resta";
                         }
                         if (!isFinished)
                         {
@@ -64,7 +65,6 @@ namespace SERV_HILOS_EX1
                             counter--;
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine("threadResta " + counter);
-                            winner = "Hilo resta";
                             // Fin Operación Atómica
                         }
                     }
