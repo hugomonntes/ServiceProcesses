@@ -6,7 +6,7 @@ namespace SERV_EX5
     {
         public delegate void MyDelegate();
 
-        public static bool menuGenerator(String[] optionsName, MyDelegate[] functions)//DEvolver false si hay problema. Mejorar comprobaciones. Mensajes de error.
+        public static bool menuGenerator(String[] optionsName, MyDelegate[] functions)
         {
             int optionSelected;
             if (optionsName == null || functions == null)

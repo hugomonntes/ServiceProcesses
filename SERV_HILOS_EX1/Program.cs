@@ -31,21 +31,19 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (isFinished)
-                        {
-                            break;
-                        }
-
-                        if (counter >= 500)
+                        if (counter == -50 || counter == 50)
                         {
                             isFinished = true;
-                            winner = "Thread Suma";
-                            break;
                         }
-
-                        counter++;
-                        Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"threadSuma {counter}");
+                        if (!isFinished)
+                        {
+                            // Incio Operación Atómica
+                            counter++;
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("threadSuma " + counter);
+                            winner = "Hilo suma";
+                            // Fin Operación Atómica
+                        }
                     }
                 }
             });
@@ -56,21 +54,19 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (isFinished)
-                        {
-                            break;
-                        }
-
-                        if (counter <= -500)
+                        if (counter == -50 || counter == 50)
                         {
                             isFinished = true;
-                            winner = "Thread Resta";
-                            break;
                         }
-
-                        counter--;
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"threadResta {counter}");
+                        if (!isFinished)
+                        {
+                            // Incio Operación Atómica
+                            counter--;
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine("threadResta " + counter);
+                            winner = "Hilo resta";
+                            // Fin Operación Atómica
+                        }
                     }
                 }
             });
