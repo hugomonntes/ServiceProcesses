@@ -27,17 +27,20 @@ namespace SERV_HILOS_EX1
         //Nota: De cara a realizar pruebas de este juego, se recomienda quitar la
         //aleatoriedad temporalmente para forzar a que varios caballos lleguen a un tiempo y
         //ver que solo uno es el que “cruza” la meta.
-        public static void initThreads(Thread[] horsesThreads, int numThreads, int randomNumber)
+        public static void initThreads(Thread[] horsesThreads, int numThreads)
         {
-            int counter = 0;
             for (int i = 0; i < numThreads; i++)
             {
-                horsesThreads[i] = new Thread(() =>
-                {
-                    counter += randomNumber;
-                    Console.WriteLine(counter);
-                });
+                horsesThreads[i] = new Thread(advancePosition);
             }
+        }
+        
+        public static void advancePosition(object randomNumber)
+        {
+            int randonParse = (int)randomNumber;
+            int counter = 0;
+            counter += randonParse;
+            Console.WriteLine(counter);
         }
 
         private static Random randomNumber = new();
@@ -48,18 +51,8 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
-            Thread[] horsesThreads = new Thread[5];
-            int[] a = new int[10];
-            int counter = 0;
-            for (int i = 0; i < horsesThreads.Length; i++)
-            {
-                Console.WriteLine(counter += getRandomNumber(5));
-                horsesThreads[i] = new Thread(() =>
-                {
-                    counter += getRandomNumber(5);
-                    Console.WriteLine("" + counter);
-                });
-            }
+            Thread[] horsesThreads;
+            initThreads(horsesThreads, 5);
         }
     }
 }
