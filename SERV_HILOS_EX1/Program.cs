@@ -39,13 +39,13 @@ namespace SERV_HILOS_EX1
                         if (counter >= 500)
                         {
                             isFinished = true;
-                            winner = "Thread Suma (verde)";
+                            winner = "Thread Suma";
                             break;
                         }
 
                         counter++;
                         Console.ForegroundColor = ConsoleColor.Green;
-                        Console.WriteLine($"threadSuma -> {counter}");
+                        Console.WriteLine($"threadSuma {counter}");
                     }
                 }
             });
@@ -64,13 +64,13 @@ namespace SERV_HILOS_EX1
                         if (counter <= -500)
                         {
                             isFinished = true;
-                            winner = "Thread Resta (rojo)";
+                            winner = "Thread Resta";
                             break;
                         }
 
                         counter--;
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine($"threadResta -> {counter}");
+                        Console.WriteLine($"threadResta {counter}");
                     }
                 }
             });
@@ -78,7 +78,7 @@ namespace SERV_HILOS_EX1
             thread2.Start();
             thread1.Join();
             thread2.Join();
-            Console.WriteLine($"Fin del programa. Ganador: {winner}");
+            Console.WriteLine($"Ganador: {winner}");
         }
     }
 }
