@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Runtime.Intrinsics.X86;
 using System.Threading;
@@ -27,21 +28,27 @@ namespace SERV_HILOS_EX1
         //Nota: De cara a realizar pruebas de este juego, se recomienda quitar la
         //aleatoriedad temporalmente para forzar a que varios caballos lleguen a un tiempo y
         //ver que solo uno es el que “cruza” la meta.
-        public static void initThreads(Thread[] horsesThreads, int numThreads)
+        public static void initThreads(Thread[] horsesThreads)
         {
-            for (int i = 0; i < numThreads; i++)
+            for (int i = 0; i < horsesThreads.Length; i++)
             {
                 horsesThreads[i] = new Thread(advancePosition);
-                horsesThreads[i].Start(5);
+                horsesThreads[i].Start(getRandomNumber(5));
             }
         }
-        
+
         public static void advancePosition(object randomNumber)
         {
-            int randonParse = (int)randomNumber;
-            int counter = 0;
-            counter += randonParse;
-            Console.WriteLine(counter);
+            int incio = 0;
+            int meta = 100;
+            string horseModel = ".-.º";
+            int randomParse = (int)randomNumber;
+            while (incio <= meta)
+            {
+                incio += randomParse;
+                Console.SetCursorPosition(incio, 0);
+                Console.Write(horseModel);
+            }
         }
 
         private static Random randomNumber = new();
@@ -52,8 +59,15 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
+            int meta = 100;
             Thread[] horsesThreads = new Thread[5];
-            initThreads(horsesThreads, 5);
+            int j = 0;
+            for (int i = 0; i < horsesThreads.Length; i++)
+            {
+                Console.SetCursorPosition(0,j+=15);
+            }
+            initThreads(horsesThreads);
+            Console.ReadKey();
         }
     }
 }
