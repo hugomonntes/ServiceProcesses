@@ -33,8 +33,13 @@ namespace SERV_HILOS_EX1
             for (int i = 0; i < horsesThreads.Length; i++)
             {
                 horsesThreads[i] = new Thread(advancePosition);
-                horsesThreads[i].Start(getRandomNumber(5));
+                //horsesThreads[i].Start(getRandomNumber(5));
             }
+        }
+
+        public static void eachThread(Thread horse)
+        {
+            horse.Start(5);
         }
 
         public static void advancePosition(object randomNumber)
