@@ -48,10 +48,16 @@ namespace SERV_HILOS_EX1
             int meta = 100;
             string horseModel = ".-.º";
             int randomParse = (int)randomNumber;
+            int y = 0;
             while (incio <= meta)
             {
                 incio += randomParse;
-                Console.SetCursorPosition(incio, 0);
+                Console.SetCursorPosition(incio, y);
+                y++;
+                if (y > 5)
+                {
+                    y = 0;
+                }
                 Console.Write(horseModel);
             }
         }
@@ -67,11 +73,12 @@ namespace SERV_HILOS_EX1
             int meta = 100;
             Thread[] horsesThreads = new Thread[5];
             int j = 0;
+            initThreads(horsesThreads);
             for (int i = 0; i < horsesThreads.Length; i++)
             {
-                Console.SetCursorPosition(0,j+=15);
+                Console.SetCursorPosition(0, j += 5);
+                eachThread(horsesThreads[i]);
             }
-            initThreads(horsesThreads);
             Console.ReadKey();
         }
     }
