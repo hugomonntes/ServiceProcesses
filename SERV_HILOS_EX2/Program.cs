@@ -32,6 +32,7 @@ namespace SERV_HILOS_EX1
             for (int i = 0; i < numThreads; i++)
             {
                 horsesThreads[i] = new Thread(advancePosition);
+                horsesThreads[i].Start(5);
             }
         }
         
@@ -51,7 +52,7 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
-            Thread[] horsesThreads;
+            Thread[] horsesThreads = new Thread[5];
             initThreads(horsesThreads, 5);
         }
     }
