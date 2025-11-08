@@ -31,18 +31,17 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (counter == -50 || counter == 50)
-                        {
-                            isFinished = true;
-                            winner = "Hilo suma";
-                        }
                         if (!isFinished)
                         {
-                            // Incio Operación Atómica
                             counter++;
                             Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("threadSuma " + counter);
-                            // Fin Operación Atómica
+                            Console.WriteLine($"Hilo Suma: {counter}");
+
+                            if (counter >= 500)
+                            {
+                                isFinished = true;
+                                winner = "Hilo Suma";
+                            }
                         }
                     }
                 }
@@ -54,18 +53,17 @@ namespace SERV_HILOS_EX1
                 {
                     lock (counterLock)
                     {
-                        if (counter == -50 || counter == 50)
-                        {
-                            isFinished = true;
-                            winner = "Hilo resta";
-                        }
                         if (!isFinished)
                         {
-                            // Incio Operación Atómica
                             counter--;
                             Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("threadResta " + counter);
-                            // Fin Operación Atómica
+                            Console.WriteLine($"Hilo Resta: {counter}");
+
+                            if (counter <= -500)
+                            {
+                                isFinished = true;
+                                winner = "Hilo Resta";
+                            }
                         }
                     }
                 }
