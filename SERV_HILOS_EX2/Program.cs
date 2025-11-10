@@ -39,11 +39,13 @@ namespace SERV_HILOS_EX1
 
         public static void eachThread(Thread horse)
         {
+
             horse.Start(5);
+
         }
 
         public static void advancePosition(object randomNumber)
-        {
+        { //TODO mover -> eachThread :)
             int incio = 0;
             int meta = 100;
             string horseModel = ".-.º";
@@ -53,11 +55,6 @@ namespace SERV_HILOS_EX1
             {
                 incio += randomParse;
                 Console.SetCursorPosition(incio, y);
-                y++;
-                if (y > 5)
-                {
-                    y = 0;
-                }
                 Console.Write(horseModel);
             }
         }

@@ -76,6 +76,3 @@ namespace SERV_HILOS_EX1
         }
     }
 }
-
-// Si un hilo acaba el otro aún da una vulet más.(ok)
-//- No haces esta parte del enunciado:  "//El Main, una vez que lanza los hilos, se queda en espera hasta que ambos hilos finalizan, luego informa de cual ha ganado."
