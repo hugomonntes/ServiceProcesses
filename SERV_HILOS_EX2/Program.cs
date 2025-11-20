@@ -35,11 +35,29 @@ namespace SERV_HILOS_EX1
             return randomNumber.Next(1, limit + 1);
         }
 
+        public static int pedirNumeroCaballos()
+        {
+            Console.Write("Introduce numero de caballos: ");
+            int.TryParse(Console.ReadLine(), out int numeroCaballos);
+            return numeroCaballos;
+        }
+
+        public static Thread[] initCaballos(Thread[] caballos, int numeroCaballos)
+        {
+            caballos = new Thread[numeroCaballos];
+            for (int i = 0; i < caballos.Length; i++)
+            {
+                //caballos[i] = new Thread();
+            }
+            return caballos;
+        }
+
         static void Main(string[] args)
         {
             object runLock = new object();
             bool isRunning = false;
             int inicio = 0;
+
             Thread caballo1 = new Thread(() =>
             {
                 while (!isRunning)
@@ -49,9 +67,8 @@ namespace SERV_HILOS_EX1
                         if (!isRunning)
                         {
                             Thread.Sleep(500);
-                            Console.SetCursorPosition(inicio += getRandomNumber(5),0);
+                            Console.SetCursorPosition(inicio += getRandomNumber(5), 0);
                             Console.Write("*");
-
                             if (inicio >= 50)
                             {
                                 isRunning = false;
