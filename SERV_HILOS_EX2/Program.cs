@@ -28,36 +28,6 @@ namespace SERV_HILOS_EX1
         //Nota: De cara a realizar pruebas de este juego, se recomienda quitar la
         //aleatoriedad temporalmente para forzar a que varios caballos lleguen a un tiempo y
         //ver que solo uno es el que “cruza” la meta.
-        public static void initThreads(Thread[] horsesThreads)
-        {
-            for (int i = 0; i < horsesThreads.Length; i++)
-            {
-                horsesThreads[i] = new Thread(advancePosition);
-                //horsesThreads[i].Start(getRandomNumber(5));
-            }
-        }
-
-        public static void eachThread(Thread horse)
-        {
-
-            horse.Start(5);
-
-        }
-
-        public static void advancePosition(object randomNumber)
-        { //TODO mover -> eachThread :)
-            int incio = 0;
-            int meta = 100;
-            string horseModel = ".-.º";
-            int randomParse = (int)randomNumber;
-            int y = 0;
-            while (incio <= meta)
-            {
-                incio += randomParse;
-                Console.SetCursorPosition(incio, y);
-                Console.Write(horseModel);
-            }
-        }
 
         private static Random randomNumber = new();
         public static int getRandomNumber(int limit)
@@ -67,16 +37,31 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
-            int meta = 100;
-            Thread[] horsesThreads = new Thread[5];
-            int j = 0;
-            initThreads(horsesThreads);
-            for (int i = 0; i < horsesThreads.Length; i++)
+            object runLock = new object();
+            bool isRunning = false;
+            int inicio = 0;
+            Thread caballo1 = new Thread(() =>
             {
-                Console.SetCursorPosition(0, j += 5);
-                eachThread(horsesThreads[i]);
-            }
-            Console.ReadKey();
+                while (!isRunning)
+                {
+                    lock (runLock)
+                    {
+                        if (!isRunning)
+                        {
+                            inicio++;
+                            Thread.Sleep(500);
+                            Console.SetCursorPosition(inicio,0);
+                            Console.Write("*");
+
+                            if (inicio >= 50)
+                            {
+                                isRunning = false;
+                            }
+                        }
+                    }
+                }
+            });
+            caballo1.Start();
         }
     }
 }
