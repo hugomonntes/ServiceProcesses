@@ -48,9 +48,8 @@ namespace SERV_HILOS_EX1
                     {
                         if (!isRunning)
                         {
-                            inicio++;
                             Thread.Sleep(500);
-                            Console.SetCursorPosition(inicio,0);
+                            Console.SetCursorPosition(inicio += getRandomNumber(5),0);
                             Console.Write("*");
 
                             if (inicio >= 50)
