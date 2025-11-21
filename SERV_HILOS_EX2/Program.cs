@@ -47,9 +47,14 @@ namespace SERV_HILOS_EX1
             caballos = new Thread[numeroCaballos];
             for (int i = 0; i < caballos.Length; i++)
             {
-                //caballos[i] = new Thread();
+                caballos[i] = new Thread(correr);
             }
             return caballos;
+        }
+
+        public static void correr(object posicion)
+        {
+
         }
 
         static void Main(string[] args)
