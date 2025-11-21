@@ -42,47 +42,34 @@ namespace SERV_HILOS_EX1
             return numeroCaballos;
         }
 
-        public static Thread[] initCaballos(Thread[] caballos, int numeroCaballos)
+        static readonly object lockRun = new();
+        static bool isRunning = true;
+        static int ganador = 0;
+        public static void avanzarCaballos(object y)
         {
-            caballos = new Thread[numeroCaballos];
-            for (int i = 0; i < caballos.Length; i++)
+            int x = 0;
+            while (isRunning)
             {
-                caballos[i] = new Thread(correr);
+                lock (lockRun)
+                {
+                    if (isRunning)
+                    {
+                        Console.SetCursorPosition(x += getRandomNumber(10), (int)y);
+                        Console.WriteLine("*");
+                        if (x >= 50)
+                        {
+                            isRunning = false;
+                            ganador = (int)y;
+                        }
+                    }
+                }
+                Thread.Sleep(getRandomNumber(1000));
             }
-            return caballos;
-        }
-
-        public static void correr(object posicion)
-        {
-
         }
 
         static void Main(string[] args)
         {
-            object runLock = new object();
-            bool isRunning = false;
-            int inicio = 0;
-
-            Thread caballo1 = new Thread(() =>
-            {
-                while (!isRunning)
-                {
-                    lock (runLock)
-                    {
-                        if (!isRunning)
-                        {
-                            Thread.Sleep(500);
-                            Console.SetCursorPosition(inicio += getRandomNumber(5), 0);
-                            Console.Write("*");
-                            if (inicio >= 50)
-                            {
-                                isRunning = false;
-                            }
-                        }
-                    }
-                }
-            });
-            caballo1.Start();
+           
         }
     }
 }
