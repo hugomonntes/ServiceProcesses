@@ -31,6 +31,9 @@
             this.txbDescarga = new System.Windows.Forms.TextBox();
             this.btnDescargar = new System.Windows.Forms.Button();
             this.txbMostrar = new System.Windows.Forms.TextBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.btnD2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txbDescarga
@@ -55,14 +58,45 @@
             this.txbMostrar.Location = new System.Drawing.Point(146, 79);
             this.txbMostrar.Multiline = true;
             this.txbMostrar.Name = "txbMostrar";
-            this.txbMostrar.Size = new System.Drawing.Size(331, 255);
+            this.txbMostrar.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txbMostrar.Size = new System.Drawing.Size(331, 85);
             this.txbMostrar.TabIndex = 2;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(146, 191);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(331, 20);
+            this.textBox1.TabIndex = 3;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(146, 217);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox2.Size = new System.Drawing.Size(331, 85);
+            this.textBox2.TabIndex = 4;
+            // 
+            // btnD2
+            // 
+            this.btnD2.Location = new System.Drawing.Point(493, 191);
+            this.btnD2.Name = "btnD2";
+            this.btnD2.Size = new System.Drawing.Size(82, 20);
+            this.btnD2.TabIndex = 5;
+            this.btnD2.Text = "Descargar";
+            this.btnD2.UseVisualStyleBackColor = true;
+            this.btnD2.Click += new System.EventHandler(this.btnDescargar2_Click);
             // 
             // Form1
             // 
+            this.AcceptButton = this.btnDescargar;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnD2);
+            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.txbMostrar);
             this.Controls.Add(this.btnDescargar);
             this.Controls.Add(this.txbDescarga);
@@ -78,6 +112,9 @@
         private System.Windows.Forms.TextBox txbDescarga;
         private System.Windows.Forms.Button btnDescargar;
         private System.Windows.Forms.TextBox txbMostrar;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button btnD2;
     }
 }
 
