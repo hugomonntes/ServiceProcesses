@@ -33,13 +33,16 @@
             this.btnPosicion = new System.Windows.Forms.Button();
             this.btnHttp = new System.Windows.Forms.Button();
             this.txbChars = new System.Windows.Forms.TextBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtUrl
             // 
-            this.txtUrl.Location = new System.Drawing.Point(151, 39);
+            this.txtUrl.Location = new System.Drawing.Point(93, 92);
             this.txtUrl.Name = "txtUrl";
-            this.txtUrl.Size = new System.Drawing.Size(413, 20);
+            this.txtUrl.Size = new System.Drawing.Size(145, 20);
             this.txtUrl.TabIndex = 0;
             // 
             // btnBusqueda
@@ -54,7 +57,7 @@
             // 
             // btnPosicion
             // 
-            this.btnPosicion.Location = new System.Drawing.Point(322, 65);
+            this.btnPosicion.Location = new System.Drawing.Point(12, 169);
             this.btnPosicion.Name = "btnPosicion";
             this.btnPosicion.Size = new System.Drawing.Size(75, 23);
             this.btnPosicion.TabIndex = 2;
@@ -63,7 +66,7 @@
             // 
             // btnHttp
             // 
-            this.btnHttp.Location = new System.Drawing.Point(489, 65);
+            this.btnHttp.Location = new System.Drawing.Point(12, 207);
             this.btnHttp.Name = "btnHttp";
             this.btnHttp.Size = new System.Drawing.Size(75, 23);
             this.btnHttp.TabIndex = 3;
@@ -77,11 +80,38 @@
             this.txbChars.Size = new System.Drawing.Size(145, 20);
             this.txbChars.TabIndex = 4;
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(263, 92);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(525, 342);
+            this.listBox1.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(58, 95);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Path";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(93, 172);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(145, 20);
+            this.textBox1.TabIndex = 7;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.txbChars);
             this.Controls.Add(this.btnHttp);
             this.Controls.Add(this.btnPosicion);
@@ -101,6 +131,9 @@
         private System.Windows.Forms.Button btnPosicion;
         private System.Windows.Forms.Button btnHttp;
         private System.Windows.Forms.TextBox txbChars;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 

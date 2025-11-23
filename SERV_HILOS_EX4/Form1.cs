@@ -18,12 +18,12 @@ namespace SERV_HILOS_EX4
             InitializeComponent();
         }
 
-        public string BuscaPalabra(string path, string wordToSearch) // hugo
+        public string BuscaPalabra(string path, string wordToSearch)
         {
             int contador = 0;
             using (StreamReader sreader = new StreamReader(path))
             {
-                string allText = sreader.ReadToEnd(); //hola a hola asd dasdafa asdfasdfasdf sadfas asdf asdfasdfa sdf asdfasdfa
+                string allText = sreader.ReadToEnd();
                 for (int i = 0; i < allText.Length - wordToSearch.Length; i++)
                 {
                     if (allText.Substring(i, wordToSearch.Length) == wordToSearch)
@@ -36,7 +36,24 @@ namespace SERV_HILOS_EX4
             return $"{Path.GetFileName(path)},{wordToSearch},{contador}";
         }
 
-        private void btnBusqueda_Click(object sender, EventArgs e)
+        public string primeraAparicionPalabra(string path, string wordToSearch)
+        {
+            using (StreamReader sreader = new StreamReader(path))
+            {
+                string allText = sreader.ReadToEnd();
+                for (int i = 0; i < allText.Length - wordToSearch.Length; i++)
+                {
+                    if (allText.Substring(i, wordToSearch.Length) == wordToSearch)
+                    {
+                        return $"{Path.GetFileName(path)},{wordToSearch},{i}";
+                    }
+                }
+            }
+            return $"{Path.GetFileName(path)},{wordToSearch},{-1}";
+        }
+
+        List<Task<string>> listaTareas = new List<Task<string>>();
+        private async void btnBusqueda_Click(object sender, EventArgs e) // Control de excepciones
         {
             DirectoryInfo directoryInfo = new DirectoryInfo(txtUrl.Text); // Comprobar vacíos, nulls (Funcion comprobar campos de todos txb)
             FileInfo[] archivos = directoryInfo.GetFiles();
@@ -44,8 +61,15 @@ namespace SERV_HILOS_EX4
             {
                 if (archivo.Extension == ".txt")
                 {
-                    Task<string> tarea = Task.Run(() => BuscaPalabra(archivo.FullName, txbChars.Text));
+                   listaTareas.Add(Task.Run(() => BuscaPalabra(archivo.FullName, txbChars.Text)));
                 }
+            }
+
+            while(listaTareas.Count > 0)
+            {
+                Task<string> tareaRealizada = await Task.WhenAny(listaTareas);
+                listaTareas.Remove(tareaRealizada);
+                listBox1.Items.Add(tareaRealizada.Result);
             }
         }
     }
