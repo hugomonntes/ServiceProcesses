@@ -2,32 +2,48 @@
 {
     internal class Program
     {
-        public static List<int> listaNumerosOriginal;
         public static Random random = new Random();
         public static int getRandomNumber(int min, int max)
         {
             return random.Next(min, max);
         }
 
-        public static void fnProductor(object listaNumeros)
+        public static List<int> listaNumeros = new List<int>();
+        public static object l = new object();
+        public static bool isRunning = false;
+        public static int contadorPrimos = 0;
+        public static void fnProductor()
         {
-            listaNumerosOriginal = (List<int>)listaNumeros;
-            int numero = getRandomNumber(1000, 10000);
-            Console.WriteLine(numero);
-            listaNumerosOriginal.Add(numero);
+            while (!isRunning)
+            {
+                lock (l)
+                {
+                    if (!isRunning)
+                    {
+                        int numero = getRandomNumber(1000, 10000);
+                        Console.WriteLine(numero);
+                        listaNumeros.Add(numero);
+                        isRunning = true;
+                    }
+
+                    if (contadorPrimos >= 5)
+                    {
+                        isRunning = false;
+                    }
+                }
+
+            }
         }
 
-        public static void fnConsumidor(object listaNumeros)
+        public static void fnConsumidor()
         {
-            int contadorPrimos = 0;
-            listaNumerosOriginal = (List<int>)listaNumeros;
-            for (int i = 0; i < listaNumerosOriginal.Count; i++)
+            for (int i = 0; i < listaNumeros.Count; i++)
             {
-                if (esPrimo(listaNumerosOriginal[i]))
+                if (esPrimo(listaNumeros[i]))
                 {
                     contadorPrimos++;
                 }
-                listaNumerosOriginal.Remove(i);
+                listaNumeros.Remove(i);
             }
         }
 
@@ -45,9 +61,14 @@
 
         static void Main(string[] args)
         {
-            Thread productor = new Thread(); // fn
-            Thread consumidor = new Thread(); // fn
+            Thread productor = new Thread(fnProductor);
+            Thread consumidor = new Thread(fnConsumidor);
 
+            productor.Start();
+            consumidor.Start();
+
+            productor.Join();
+            consumidor.Join();
         }
     }
 }
