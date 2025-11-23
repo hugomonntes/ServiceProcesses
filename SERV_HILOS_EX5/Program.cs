@@ -9,41 +9,48 @@
         }
 
         public static List<int> listaNumeros = new List<int>();
-        public static object l = new object();
-        public static bool isRunning = false;
         public static int contadorPrimos = 0;
+        public static bool productorRunning = true;
+        public static object semaforo = new object();
         public static void fnProductor()
         {
-            while (!isRunning)
+            while (true)
             {
-                lock (l)
+                lock (semaforo)
                 {
-                    if (!isRunning)
+                    if (!productorRunning)
                     {
-                        int numero = getRandomNumber(1000, 10000);
-                        Console.WriteLine(numero);
-                        listaNumeros.Add(numero);
-                        isRunning = true;
+                        break;
                     }
-
-                    if (contadorPrimos >= 5)
-                    {
-                        isRunning = false;
-                    }
+                    int numero = getRandomNumber(1000, 10000);
+                    Console.WriteLine(numero);
+                    listaNumeros.Add(numero);
                 }
-
             }
         }
 
         public static void fnConsumidor()
         {
-            for (int i = 0; i < listaNumeros.Count; i++)
+            while (productorRunning)
             {
-                if (esPrimo(listaNumeros[i]))
+                while (listaNumeros.Count > 0)
                 {
-                    contadorPrimos++;
+                    int numero = listaNumeros[0];
+                    listaNumeros.RemoveAt(0);
+                    if (esPrimo(numero))
+                    {
+                        contadorPrimos++;
+                        lock (semaforo)
+                        {
+                            if (contadorPrimos == 5)
+                            {
+                                contadorPrimos = 0;
+                                Console.WriteLine("He detectado 5 primos");
+                                productorRunning = false;
+                            }
+                        }
+                    }
                 }
-                listaNumeros.Remove(i);
             }
         }
 
