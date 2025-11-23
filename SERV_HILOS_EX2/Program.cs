@@ -35,11 +35,17 @@ namespace SERV_HILOS_EX1
             return randomNumber.Next(1, limit + 1);
         }
 
-        public static int pedirNumeroCaballos()
+        public static int pedirEntero()
         {
-            Console.Write("Introduce numero de caballos: ");
-            int.TryParse(Console.ReadLine(), out int numeroCaballos);
-            return numeroCaballos;
+            int num = 0;
+            bool flag;
+            do
+            {
+                Console.WriteLine("Introduce un numero entero");
+                flag = int.TryParse(Console.ReadLine(), out num);
+            } while (!flag);
+
+            return num;
         }
 
         static readonly object lockRun = new();
@@ -69,7 +75,75 @@ namespace SERV_HILOS_EX1
 
         static void Main(string[] args)
         {
-           
+            int dinero = 1000;
+            int apuesta = 0;
+            int caballoElegido = 0;
+            int cantidadCaballos = 0;
+            int y = 0;
+            Thread[] caballos;
+            do
+            {
+                isRunning = true;
+                caballoElegido = 0;
+                apuesta = 0;
+                Console.WriteLine($"Tu saldo es {dinero}$");
+                Console.WriteLine("¿Cuantos caballos quieres? (0 salir)");
+                cantidadCaballos = pedirEntero();
+                caballos = new Thread[cantidadCaballos];
+                Console.WriteLine($"Selecciona uno de los {cantidadCaballos} caballos ");
+
+                while (caballoElegido < 1 || caballoElegido > cantidadCaballos)
+                {
+                    Console.WriteLine("Mete un numero dentro del rango de caballos");
+                    caballoElegido = pedirEntero();
+                }
+                Console.WriteLine($"Cual es tu apuesta? (Saldo {dinero}$)");
+                while (apuesta <= 0 || apuesta > dinero)
+                {
+                    Console.WriteLine("introduce un numero mayor que 0 y que puedas pagar!");
+                    apuesta = pedirEntero();
+                }
+                dinero -= apuesta;
+
+                Console.WriteLine($"Saldo tras la apuesta:{dinero}");
+                Console.WriteLine("Enter para empezar la carrera");
+                Console.ReadKey();
+                Console.Clear();
+               
+                for (int i = 0; i < caballos.Length; i++)
+                {
+                    caballos[i] = new Thread(avanzarCaballos);
+                }
+                for (int i = 1; i <= caballos.Length; i++)
+                {
+                    caballos[i - 1].Start(y + i);
+                }
+                for (int i = 0; i < caballos.Length; i++)
+                {
+                    caballos[i].Join();
+                }
+                Console.Clear();
+                Console.WriteLine($"Ha ganado el caballo {ganador}!");
+                if (ganador == caballoElegido)
+                {
+                    Console.WriteLine("Has ganado!");
+                    dinero += (apuesta * 2);
+                    Console.WriteLine($"Has ganado {(apuesta * 2)}$");
+                }
+                else
+                {
+                    Console.WriteLine("Has perdido...");
+                }
+                Console.ReadKey();
+                Console.Clear();
+                if (dinero == 0)
+                {
+                    cantidadCaballos = 0;
+                    Console.WriteLine("Te has quedado sin dinero para apostar...");
+                    Console.WriteLine("Enter para salir...");
+                    Console.ReadKey();
+                }
+            } while (cantidadCaballos != 0);
         }
     }
 }
