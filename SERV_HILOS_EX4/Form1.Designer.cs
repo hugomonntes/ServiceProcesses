@@ -74,6 +74,7 @@
             this.btnHttp.TabIndex = 3;
             this.btnHttp.Text = "HTTP";
             this.btnHttp.UseVisualStyleBackColor = true;
+            this.btnHttp.Click += new System.EventHandler(this.btnHttp_Click);
             // 
             // txbChars
             // 
@@ -87,6 +88,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(263, 92);
             this.listBox1.Name = "listBox1";
+            this.listBox1.ScrollAlwaysVisible = true;
             this.listBox1.Size = new System.Drawing.Size(525, 342);
             this.listBox1.TabIndex = 5;
             // 

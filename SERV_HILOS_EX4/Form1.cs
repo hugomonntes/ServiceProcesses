@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -95,6 +96,19 @@ namespace SERV_HILOS_EX4
                     listBox1.Items.Add(tarea);
                 }
                 tareasPosicion.Clear();
+            }
+        }
+
+        private async void btnHttp_Click(object sender, EventArgs e)
+        {
+            HttpClient http = new HttpClient();
+            try
+            {
+                Task<HttpResponseMessage> tareaPorRealizar = http.GetAsync(textBox2.Text);
+                listBox1.Items.Add(await tareaPorRealizar);
+            }
+            catch (Exception)
+            {
             }
         }
     }
