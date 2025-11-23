@@ -32,7 +32,7 @@ namespace SERV_HILOS_EX4
                     }
                 }
             }
-            
+
             return $"{Path.GetFileName(path)},{wordToSearch},{contador}";
         }
 
@@ -51,25 +51,50 @@ namespace SERV_HILOS_EX4
             }
             return $"{Path.GetFileName(path)},{wordToSearch},{-1}";
         }
+        public FileInfo[] getArchivos(string path) // Controlar excepciones
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(path);
+            return directoryInfo.GetFiles();
+        }
 
         List<Task<string>> listaTareas = new List<Task<string>>();
         private async void btnBusqueda_Click(object sender, EventArgs e) // Control de excepciones
         {
-            DirectoryInfo directoryInfo = new DirectoryInfo(txtUrl.Text); // Comprobar vacíos, nulls (Funcion comprobar campos de todos txb)
-            FileInfo[] archivos = directoryInfo.GetFiles();
-            foreach (FileInfo archivo in archivos)
+            foreach (FileInfo archivo in getArchivos(txtUrl.Text))
             {
                 if (archivo.Extension == ".txt")
                 {
-                   listaTareas.Add(Task.Run(() => BuscaPalabra(archivo.FullName, txbChars.Text)));
+                    listaTareas.Add(Task.Run(() => BuscaPalabra(archivo.FullName, txbChars.Text)));
                 }
             }
 
-            while(listaTareas.Count > 0)
+            while (listaTareas.Count > 0)
             {
                 Task<string> tareaRealizada = await Task.WhenAny(listaTareas);
                 listaTareas.Remove(tareaRealizada);
                 listBox1.Items.Add(tareaRealizada.Result);
+            }
+        }
+
+        List<Task<string>> tareasPosicion = new List<Task<string>>();
+        private async void btnPosicion_Click(object sender, EventArgs e)
+        {
+            foreach (FileInfo archivo in getArchivos(txtUrl.Text))
+            {
+                if (archivo.Extension == ".txt")
+                {
+                    tareasPosicion.Add(Task.Run(() => primeraAparicionPalabra(archivo.FullName, textBox1.Text)));
+                }
+            }
+
+            while (tareasPosicion.Count > 0)
+            {
+                string[] tareasRealizadas = await Task.WhenAll(tareasPosicion);
+                foreach (string tarea in tareasRealizadas)
+                {
+                    listBox1.Items.Add(tarea);
+                }
+                tareasPosicion.Clear();
             }
         }
     }
