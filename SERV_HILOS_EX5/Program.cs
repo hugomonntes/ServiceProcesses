@@ -14,22 +14,21 @@
         public static object semaforo = new object();
         public static void fnProductor()
         {
-            while (true)
+            while (productorRunning)
             {
                 lock (semaforo)
                 {
-                    if (!productorRunning)
+                    if (productorRunning)
                     {
-                        break;
+                        int numero = getRandomNumber(1000, 10000);
+                        Console.WriteLine(numero);
+                        listaNumeros.Add(numero);
                     }
-                    int numero = getRandomNumber(1000, 10000);
-                    Console.WriteLine(numero);
-                    listaNumeros.Add(numero);
                 }
             }
         }
 
-        public static void fnConsumidor()
+        public static void fnConsumidor()//Continua hasta que no haya numeros, ojo con lock, colores
         {
             while (productorRunning)
             {

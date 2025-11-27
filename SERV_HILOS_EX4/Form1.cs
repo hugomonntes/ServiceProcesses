@@ -88,7 +88,7 @@ namespace SERV_HILOS_EX4
                 }
             }
 
-            while (tareasPosicion.Count > 0)
+          //  while (tareasPosicion.Count > 0)
             {
                 string[] tareasRealizadas = await Task.WhenAll(tareasPosicion);
                 foreach (string tarea in tareasRealizadas)
