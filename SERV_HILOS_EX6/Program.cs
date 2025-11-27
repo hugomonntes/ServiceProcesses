@@ -41,7 +41,7 @@ namespace SERV_HILOS_EX6
                 int fila = i;
                 Task<int> tarea = Task.Run(() => searchNumber(numeroBuscar, fila, listaNumeros));
                 listaTareas.Add(tarea);
-            }
+            }  
 
             while (listaTareas.Count > 0)
             {
