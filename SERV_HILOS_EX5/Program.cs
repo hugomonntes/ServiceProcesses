@@ -21,6 +21,7 @@
                     if (productorRunning)
                     {
                         int numero = getRandomNumber(1000, 10000);
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
                         Console.WriteLine(numero);
                         listaNumeros.Add(numero);
                     }
@@ -28,22 +29,23 @@
             }
         }
 
-        public static void fnConsumidor()//Continua hasta que no haya numeros, ojo con lock, colores
+        public static void fnConsumidor() //Continua hasta que no haya numeros, ojo con lock(ok), colores(ok)
         {
             while (productorRunning)
             {
                 while (listaNumeros.Count > 0)
                 {
-                    int numero = listaNumeros[0];
-                    listaNumeros.RemoveAt(0);
-                    if (esPrimo(numero))
+                    lock (semaforo)
                     {
-                        contadorPrimos++;
-                        lock (semaforo)
+                        int numero = listaNumeros[0];
+                        listaNumeros.RemoveAt(0);
+                        if (esPrimo(numero))
                         {
+                            contadorPrimos++;
                             if (contadorPrimos == 5)
                             {
                                 contadorPrimos = 0;
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("He detectado 5 primos");
                                 productorRunning = false;
                             }
@@ -75,6 +77,8 @@
 
             productor.Join();
             consumidor.Join();
+
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }

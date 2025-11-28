@@ -88,15 +88,12 @@ namespace SERV_HILOS_EX4
                 }
             }
 
-          //  while (tareasPosicion.Count > 0)
+            string[] tareasRealizadas = await Task.WhenAll(tareasPosicion);
+            foreach (string tarea in tareasRealizadas)
             {
-                string[] tareasRealizadas = await Task.WhenAll(tareasPosicion);
-                foreach (string tarea in tareasRealizadas)
-                {
-                    listBox1.Items.Add(tarea);
-                }
-                tareasPosicion.Clear();
+                listBox1.Items.Add(tarea);
             }
+            tareasPosicion.Clear();
         }
 
         private async void btnHttp_Click(object sender, EventArgs e)

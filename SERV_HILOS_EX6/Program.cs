@@ -22,7 +22,7 @@ namespace SERV_HILOS_EX6
             return -1;
         }
 
-        static async void Main(string[] args)
+        static async Task Main(string[] args)
         {
             List<Task<int>> listaTareas = new List<Task<int>>();
             int[,] listaNumeros = new int[10, 10000000];
