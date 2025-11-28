@@ -29,7 +29,7 @@
             }
         }
 
-        public static void fnConsumidor() //Continua hasta que no haya numeros, ojo con lock(ok), colores(ok)
+        public static void fnConsumidor() 
         {
             while (productorRunning)
             {
@@ -41,7 +41,8 @@
                         listaNumeros.RemoveAt(0);
                         if (esPrimo(numero))
                         {
-                            contadorPrimos++;
+                            contadorPrimos++; 
+
                             if (contadorPrimos == 5)
                             {
                                 contadorPrimos = 0;
@@ -52,6 +53,7 @@
                         }
                     }
                 }
+                Thread.Sleep(50);
             }
         }
 
@@ -71,7 +73,7 @@
         {
             Thread productor = new Thread(fnProductor);
             Thread consumidor = new Thread(fnConsumidor);
-
+            productor.Priority = ThreadPriority.Highest;
             productor.Start();
             consumidor.Start();
 
@@ -79,6 +81,7 @@
             consumidor.Join();
 
             Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine(listaNumeros.Count);
         }
     }
 }
