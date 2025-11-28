@@ -41,17 +41,12 @@ namespace SERV_HILOS_EX6
                 int fila = i;
                 Task<int> tarea = Task.Run(() => searchNumber(numeroBuscar, fila, listaNumeros));
                 listaTareas.Add(tarea);
-            }  
+            }
 
-            while (listaTareas.Count > 0)
+            Task<int> tareaFinalizada = await Task.WhenAny(listaTareas);
+            if (tareaFinalizada.Result != -1)
             {
-                Task<int> tareaFinalizada = await Task.WhenAny(listaTareas);
-                listaTareas.Remove(tareaFinalizada);
-                if (tareaFinalizada.Result != -1)
-                {
-                    Console.WriteLine($"Numero {numeroBuscar} encontrado en la fila {listaTareas.IndexOf(tareaFinalizada)} en la columna {tareaFinalizada.Result}");
-                    break;
-                }
+                Console.WriteLine($"Numero {numeroBuscar} encontrado en la fila {listaTareas.IndexOf(tareaFinalizada)} en la columna {tareaFinalizada.Result}");
             }
         }
     }
