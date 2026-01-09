@@ -1,0 +1,41 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EX1_SERVIDOR
+{
+    internal class Server
+    {
+        public bool ServerIsRunning { get; set; } = true;
+        public int Port { get; set; } = 31416;
+
+        public void Init()
+        {
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            {
+                socket.Bind(iPEndPoint);
+                socket.Listen(10);
+                Console.WriteLine($"Conectado a {iPEndPoint}"); // TODO Revisar
+                while (ServerIsRunning)
+                {
+                    Socket client = socket.Accept();
+                    Thread thread = new Thread(() => ClientManager(client));
+                }
+
+            }
+        }
+
+        private void ClientManager(Socket socketClient)
+        {
+            using (socketClient)
+            {
+
+            }
+        }
+    }
+}
