@@ -25,6 +25,7 @@ namespace EX1_SERVIDOR
                 {
                     Socket client = socket.Accept();
                     Thread thread = new Thread(() => ClientManager(client));
+                    thread.Start();
                 }
 
             }
@@ -34,7 +35,15 @@ namespace EX1_SERVIDOR
         {
             using (socketClient)
             {
+                IPEndPoint clientEndPoint = (IPEndPoint)socketClient.RemoteEndPoint;
+                Console.WriteLine($"Cliente conectado desde {clientEndPoint.Address}:{clientEndPoint.Port}");
+                Encoding encoding = Console.OutputEncoding;
+                using (NetworkStream networkStream = new NetworkStream(socketClient))
+                using (StreamReader sReader = new StreamReader(networkStream, encoding))
+                using (StreamWriter sWriter = new StreamWriter(networkStream, encoding))
+                {
 
+                }
             }
         }
     }
