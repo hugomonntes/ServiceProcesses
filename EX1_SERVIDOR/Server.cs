@@ -42,7 +42,42 @@ namespace EX1_SERVIDOR
                 using (StreamReader sReader = new StreamReader(networkStream, encoding))
                 using (StreamWriter sWriter = new StreamWriter(networkStream, encoding))
                 {
+                    sWriter.AutoFlush = true;
+                    string init = "START";
+                    sWriter.WriteLine(init);
+                    string? command = "";
+                    while (command != null)
+                    {
+                        try
+                        {
+                            command = sReader.ReadLine().Trim();
 
+                            if (command == "time")
+                            {
+                                sWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
+                            }
+                            else if (command == "date")
+                            {
+                                sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
+                            }
+                            else if (command == "all")
+                            {
+                                sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                            }
+                            else if (command.StartsWith("close"))
+                            {
+                                // TODO crear una función para gestionar contraseñas
+                            }
+                            else
+                            {
+                                sWriter.WriteLine("ERROR: Comando no reconocido");
+                            }
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    }
                 }
             }
         }
