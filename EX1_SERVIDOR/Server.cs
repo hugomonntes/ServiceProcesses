@@ -49,7 +49,7 @@ namespace EX1_SERVIDOR
                     {
                         try
                         {
-                            command = sReader.ReadLine().Trim(); // Null
+                            command = sReader.ReadLine().Trim(); // TODO NullPointerException
                             switch (command)
                             {
                                 case "time":
@@ -69,7 +69,7 @@ namespace EX1_SERVIDOR
                                     break;
                             }
                         }
-                        catch (Exception ex)
+                        catch (Exception ex) when (ex is SocketException || ex is IOException)
                         {
                             Console.WriteLine(ex.Message);
                         }
