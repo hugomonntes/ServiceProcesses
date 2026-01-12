@@ -14,6 +14,11 @@ namespace EX1_SERVIDOR
         public int Port { get; set; } = 31416; // TODO comprobar puerto libre
         public string closePassword { get; set; } = $"close {ReadFile("password")}";
 
+        public void CheckPortIsFree(int Port)
+        {
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
+        }
+
         public void Init()
         {
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
@@ -46,44 +51,43 @@ namespace EX1_SERVIDOR
                     sWriter.AutoFlush = true;
                     sWriter.WriteLine("START");
                     string command = "";
-                    do // TODO quitar do while
+                    try
                     {
-                        try
+                        command = sReader.ReadLine();
+                        if (command != null)
                         {
-                            command = sReader.ReadLine().Trim(); // TODO NullPointerException
-                            switch (command)
-                            {
-                                case "time":
-                                    sWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
-                                    break;
-                                case "date":
-                                    sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
-                                    break;
-                                case "all":
-                                    sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
-                                    break;
-                                case "close":
-                                    //TODO crear una función para gestionar contraseñas
-                                    break;
-                                case closePassword: // TODO fix
-                                    //TODO crear una función para gestionar contraseñas
-                                    break;
-                                default:
-                                    sWriter.WriteLine("ERROR: Comando no reconocido");
-                                    break;
-                            }
-                            if (command == $"close {closePassword}")
-                            {
-                                sWriter.WriteLine(closePassword);
-                            }
+                            command = command.Trim();
                         }
-                        catch (Exception ex) when (ex is SocketException || ex is IOException)
+                        switch (command)
                         {
-                            Console.WriteLine(ex.Message);
+                            case "time":
+                                sWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
+                                break;
+                            case "date":
+                                sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
+                                break;
+                            case "all":
+                                sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                                break;
+                            case "close":
+                                //TODO crear una función para gestionar contraseñas
+                                break;
+                            //case closePassword: // TODO fix
+                            //    TODO crear una función para gestionar contraseñas
+                            //    break;
+                            default:
+                                sWriter.WriteLine("ERROR: Comando no reconocido");
+                                break;
                         }
-
+                        if (command == $"close {closePassword}")
+                        {
+                            sWriter.WriteLine(closePassword);
+                        }
                     }
-                    while (command != null);
+                    catch (Exception ex) when (ex is SocketException || ex is IOException)
+                    {
+                        Console.WriteLine(ex.Message);
+                    }
                 }
             }
         }
