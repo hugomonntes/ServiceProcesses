@@ -43,41 +43,39 @@ namespace EX1_SERVIDOR
                 using (StreamWriter sWriter = new StreamWriter(networkStream, encoding))
                 {
                     sWriter.AutoFlush = true;
-                    string init = "START";
-                    sWriter.WriteLine(init);
-                    string? command = "";
-                    while (command != null)
+                    sWriter.WriteLine("START");
+                    string command = "";
+                    do
                     {
                         try
                         {
-                            command = sReader.ReadLine().Trim();
-
-                            if (command == "time")
+                            command = sReader.ReadLine().Trim(); // Null
+                            switch (command)
                             {
-                                sWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
-                            }
-                            else if (command == "date")
-                            {
-                                sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
-                            }
-                            else if (command == "all")
-                            {
-                                sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
-                            }
-                            else if (command.StartsWith("close"))
-                            {
-                                // TODO crear una función para gestionar contraseñas
-                            }
-                            else
-                            {
-                                sWriter.WriteLine("ERROR: Comando no reconocido");
+                                case "time":
+                                    sWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
+                                    break;
+                                case "date":
+                                    sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
+                                    break;
+                                case "all":
+                                    sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
+                                    break;
+                                case "close":
+                                    // TODO crear una función para gestionar contraseñas
+                                    break;
+                                default:
+                                    sWriter.WriteLine("ERROR: Comando no reconocido");
+                                    break;
                             }
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-
+                            Console.WriteLine(ex.Message);
                         }
+
                     }
+                    while (command != null);
                 }
             }
         }
