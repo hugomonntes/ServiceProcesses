@@ -12,6 +12,7 @@ namespace EX1_SERVIDOR
     {
         public bool ServerIsRunning { get; set; } = true;
         public int Port { get; set; } = 31416; // TODO comprobar puerto libre
+        public string closePassword { get; set; } = $"close {ReadFile("password")}";
 
         public void Init()
         {
@@ -45,7 +46,7 @@ namespace EX1_SERVIDOR
                     sWriter.AutoFlush = true;
                     sWriter.WriteLine("START");
                     string command = "";
-                    do
+                    do // TODO quitar do while
                     {
                         try
                         {
@@ -62,11 +63,18 @@ namespace EX1_SERVIDOR
                                     sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                                     break;
                                 case "close":
-                                    // TODO crear una función para gestionar contraseñas
+                                    //TODO crear una función para gestionar contraseñas
+                                    break;
+                                case closePassword: // TODO fix
+                                    //TODO crear una función para gestionar contraseñas
                                     break;
                                 default:
                                     sWriter.WriteLine("ERROR: Comando no reconocido");
                                     break;
+                            }
+                            if (command == $"close {closePassword}")
+                            {
+                                sWriter.WriteLine(closePassword);
                             }
                         }
                         catch (Exception ex) when (ex is SocketException || ex is IOException)
@@ -77,6 +85,15 @@ namespace EX1_SERVIDOR
                     }
                     while (command != null);
                 }
+            }
+        }
+
+        public static string ReadFile(string FileName)
+        {
+            string path = $"{Environment.GetEnvironmentVariable("programdata")}\\{FileName}.txt";
+            using (StreamReader reader = new StreamReader(path))
+            {
+                return reader.ReadToEnd().Trim();
             }
         }
     }
