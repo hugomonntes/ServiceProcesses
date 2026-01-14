@@ -12,33 +12,49 @@ namespace EX1_SERVIDOR
     internal class Server
     {
         public bool ServerIsRunning { get; set; } = true;
-        public int Port { get; set; } = 31416; // TODO comprobar puerto libre
+        public int Port { get; set; } = 9000; // TODO comprobar puerto libre
         public string Password { get; set; } = ReadFile("password");
         private Socket socketServer;
-        public void CheckPortIsFree(int Port)
-        {
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
-        }
 
-        public void InitServer()
+        public void InitServer(int Port)
         {
-            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
-            using (socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            bool PortUsed = false;
+            do
             {
-                socketServer.Bind(iPEndPoint);
-                socketServer.Listen(10);
-                Console.WriteLine($"Conectado a {iPEndPoint}");
-                while (ServerIsRunning)
+                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
+                using (socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
                 {
                     try
                     {
-                        Socket client = socketServer.Accept();
-                        Thread thread = new Thread(() => ClientManager(client));
-                        thread.Start();
+                        socketServer.Bind(iPEndPoint);
+                        socketServer.Listen(10);
+                        Console.WriteLine($"Conectado a {iPEndPoint}");
                     }
-                    catch (SocketException s)
+                    catch (SocketException s) when (s.ErrorCode == (int)SocketError.AddressAlreadyInUse)
                     {
+                        PortUsed = true;
+                        Port++;
+                    } catch (SocketException)
+                    {
+                        PortUsed = true;
+                        Port++;
                     }
+
+                }
+            } while (!PortUsed);
+
+
+            while (ServerIsRunning)
+            {
+                try
+                {
+                    Socket client = socketServer.Accept();
+                    Thread thread = new Thread(() => ClientManager(client));
+                    thread.IsBackground = true;
+                    thread.Start();
+                }
+                catch (SocketException s)
+                {
                 }
             }
         }
@@ -70,6 +86,7 @@ namespace EX1_SERVIDOR
                         {
                             command = command.Trim();
                         }
+
                         if (command == "time")
                         {
                             sWriter.WriteLine(DateTime.Now.ToString("HH:mm:ss"));
@@ -82,7 +99,7 @@ namespace EX1_SERVIDOR
                         {
                             sWriter.WriteLine(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"));
                         }
-                        else if (command == $"close {Password}") // TODO
+                        else if (command == $"close {Password}")
                         {
                             //close password: Junto con el comando close se debe verificar que viene
                             //una contraseña. Si esta es correcta el servidor ha de finalizar y se lo
@@ -92,6 +109,14 @@ namespace EX1_SERVIDOR
                             sWriter.WriteLine($"close {Password}");
                             StopServer(socketServer);
                             sWriter.WriteLine("Conexión con el servidor finalizada");
+                        }
+                        else if (command == $"close")
+                        {
+                            sWriter.WriteLine("Comando close sin contraseña");
+                        }
+                        else if (command != $"close {Password}")
+                        {
+                            sWriter.WriteLine("Contraseña Incorrecta");
                         }
                         else
                         {
