@@ -6,7 +6,7 @@
         {
             Server server = new Server();
             //Console.WriteLine(server.ReadFile("password"));
-            server.Init();
+            server.InitServer();
         }
     }
 }
