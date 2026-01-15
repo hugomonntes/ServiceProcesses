@@ -12,9 +12,39 @@ namespace EX1_SERVIDOR
     internal class Server
     {
         public bool ServerIsRunning { get; set; } = true;
-        public int Port { get; set; } = 31416; // TODO comprobar puerto libre
+        public int Port { get; set; } = SearchFreePort(9000);
         public string Password { get; set; } = ReadFile("password");
-        private Socket socketServer;
+        private static Socket socketServer;
+
+        public static int SearchFreePort(int port)
+        {
+            bool portIsFree = true;
+            do
+            {
+                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, port);
+                using (socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    try
+                    {
+                        portIsFree = true;
+                        socketServer.Bind(iPEndPoint);
+                        socketServer.Listen(1);
+                    }
+                    catch (SocketException e) when (e.ErrorCode == (int)SocketError.AddressAlreadyInUse)
+                    {
+                        portIsFree = false;
+                        port++;
+                    }
+                    catch (SocketException e)
+                    {
+                        portIsFree = false;
+                        port++;
+                    }
+                }
+            }
+            while (!portIsFree);
+            return port;
+        }
 
         public void InitServer()
         {
@@ -86,7 +116,6 @@ namespace EX1_SERVIDOR
                             //indica al cliente.Si no devuelve un mensaje de error al cliente(Debe
                             //diferenciarse el error de contraseña no válida o que no se haya enviado
                             //la contraseña).
-                            sWriter.WriteLine($"close {Password}");
                             StopServer(socketServer);
                             sWriter.WriteLine("Conexión con el servidor finalizada");
                         }
