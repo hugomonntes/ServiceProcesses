@@ -12,49 +12,29 @@ namespace EX1_SERVIDOR
     internal class Server
     {
         public bool ServerIsRunning { get; set; } = true;
-        public int Port { get; set; } = 9000; // TODO comprobar puerto libre
+        public int Port { get; set; } = 31416; // TODO comprobar puerto libre
         public string Password { get; set; } = ReadFile("password");
         private Socket socketServer;
 
-        public void InitServer(int Port)
+        public void InitServer()
         {
-            bool PortUsed = false;
-            do
+            IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
+            using (socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, Port);
-                using (socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                socketServer.Bind(iPEndPoint);
+                socketServer.Listen(10);
+                Console.WriteLine($"Conectado a {iPEndPoint}");
+                while (ServerIsRunning)
                 {
                     try
                     {
-                        socketServer.Bind(iPEndPoint);
-                        socketServer.Listen(10);
-                        Console.WriteLine($"Conectado a {iPEndPoint}");
+                        Socket client = socketServer.Accept();
+                        Thread thread = new Thread(() => ClientManager(client));
+                        thread.Start();
                     }
-                    catch (SocketException s) when (s.ErrorCode == (int)SocketError.AddressAlreadyInUse)
+                    catch (SocketException s)
                     {
-                        PortUsed = true;
-                        Port++;
-                    } catch (SocketException)
-                    {
-                        PortUsed = true;
-                        Port++;
                     }
-
-                }
-            } while (!PortUsed);
-
-
-            while (ServerIsRunning)
-            {
-                try
-                {
-                    Socket client = socketServer.Accept();
-                    Thread thread = new Thread(() => ClientManager(client));
-                    thread.IsBackground = true;
-                    thread.Start();
-                }
-                catch (SocketException s)
-                {
                 }
             }
         }
