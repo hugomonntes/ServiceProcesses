@@ -42,7 +42,7 @@ namespace EX1_SERVIDOR
                     }
                 }
             }
-            while (!portIsFree);
+            while (!portIsFree);//maxport
             return port;
         }
 
@@ -124,13 +124,9 @@ namespace EX1_SERVIDOR
                         {
                             sWriter.WriteLine("Comando close sin contraseña");
                         }
-                        else if (command != $"close {Password}")
-                        {
-                            sWriter.WriteLine("Contraseña Incorrecta");
-                        }
                         else
                         {
-                            sWriter.WriteLine("ERROR: Comando no reconocido");
+                            sWriter.WriteLine("ERROR, comando no válido");
                         }
                     }
                     catch (Exception ex) when (ex is SocketException || ex is IOException)
@@ -141,13 +137,21 @@ namespace EX1_SERVIDOR
             }
         }
 
-        public static string ReadFile(string FileName)
+        public static string ReadFile(string FileName)//try
         {
-            string path = $"{Environment.GetEnvironmentVariable("programdata")}\\{FileName}.txt";
-            using (StreamReader reader = new StreamReader(path))
+            try
             {
-                return reader.ReadToEnd().Trim();
+                string path = $"{Environment.GetEnvironmentVariable("programdata")}\\{FileName}.txt";
+                using (StreamReader reader = new StreamReader(path))
+                {
+                    return reader.ReadToEnd().Trim();
+                }
             }
+            catch (IOException io)
+            {
+                Console.WriteLine(io.Message);
+            }
+            return "";
         }
     }
 }
