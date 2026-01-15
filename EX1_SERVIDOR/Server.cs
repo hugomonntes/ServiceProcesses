@@ -60,6 +60,7 @@ namespace EX1_SERVIDOR
                     {
                         Socket client = socketServer.Accept();
                         Thread thread = new Thread(() => ClientManager(client));
+                        thread.IsBackground = true;
                         thread.Start();
                     }
                     catch (SocketException s)
@@ -69,10 +70,10 @@ namespace EX1_SERVIDOR
             }
         }
 
-        public void StopServer(Socket socket)
+        public void StopServer(Socket socketServer)
         {
             ServerIsRunning = false;
-            socket.Close();
+            socketServer.Close();
         }
 
         private void ClientManager(Socket socketClient)
