@@ -56,6 +56,7 @@ namespace EX1_CLIENTE
         public async void Buttons_click(object sender, EventArgs e)
         {
             string buttonContent = ((Button)sender).Text;
+            string password = txbPassword.Text; // Hacer comprobaciones
             string message = await DataManager(IPAddress.Parse("127.0.0.1"), 31416);
         }
 
