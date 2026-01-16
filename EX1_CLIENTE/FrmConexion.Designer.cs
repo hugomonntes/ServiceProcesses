@@ -92,9 +92,9 @@
         #endregion
 
         private System.Windows.Forms.Label IP;
-        private System.Windows.Forms.TextBox txbIp;
+        public System.Windows.Forms.TextBox txbIp;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label lblPuerto;
-        private System.Windows.Forms.TextBox txbPuerto;
+        public System.Windows.Forms.TextBox txbPuerto;
     }
 }
