@@ -55,7 +55,14 @@ namespace EX1_CLIENTE
 
         public async void Buttons_click(object sender, EventArgs e)
         {
+            string buttonContent = ((Button)sender).Text;
             string message = await DataManager(IPAddress.Parse("127.0.0.1"), 31416);
+        }
+
+        private void btnConexion_Click(object sender, EventArgs e)
+        {
+            FrmConexion frmConexion = new FrmConexion();
+            frmConexion.ShowDialog();
         }
     }
 }

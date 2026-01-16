@@ -28,77 +28,93 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.btnTime = new System.Windows.Forms.Button();
+            this.btnDate = new System.Windows.Forms.Button();
+            this.BtnAll = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.txbPassword = new System.Windows.Forms.TextBox();
+            this.lblResultado = new System.Windows.Forms.Label();
+            this.btnConexion = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // btnTime
             // 
-            this.button1.Location = new System.Drawing.Point(12, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnTime.Location = new System.Drawing.Point(12, 12);
+            this.btnTime.Name = "btnTime";
+            this.btnTime.Size = new System.Drawing.Size(75, 23);
+            this.btnTime.TabIndex = 0;
+            this.btnTime.Text = "Time";
+            this.btnTime.UseVisualStyleBackColor = true;
+            this.btnTime.Click += new System.EventHandler(this.Buttons_click);
             // 
-            // button2
+            // btnDate
             // 
-            this.button2.Location = new System.Drawing.Point(93, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnDate.Location = new System.Drawing.Point(93, 12);
+            this.btnDate.Name = "btnDate";
+            this.btnDate.Size = new System.Drawing.Size(75, 23);
+            this.btnDate.TabIndex = 1;
+            this.btnDate.Text = "Date";
+            this.btnDate.UseVisualStyleBackColor = true;
+            this.btnDate.Click += new System.EventHandler(this.Buttons_click);
             // 
-            // button3
+            // BtnAll
             // 
-            this.button3.Location = new System.Drawing.Point(174, 12);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.BtnAll.Location = new System.Drawing.Point(174, 12);
+            this.BtnAll.Name = "BtnAll";
+            this.BtnAll.Size = new System.Drawing.Size(75, 23);
+            this.BtnAll.TabIndex = 2;
+            this.BtnAll.Text = "All";
+            this.BtnAll.UseVisualStyleBackColor = true;
+            this.BtnAll.Click += new System.EventHandler(this.Buttons_click);
             // 
-            // button4
+            // btnClose
             // 
-            this.button4.Location = new System.Drawing.Point(255, 12);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 3;
-            this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnClose.Location = new System.Drawing.Point(255, 12);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 3;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.Buttons_click);
             // 
-            // textBox1
+            // txbPassword
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 41);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(318, 20);
-            this.textBox1.TabIndex = 4;
+            this.txbPassword.Location = new System.Drawing.Point(12, 41);
+            this.txbPassword.Name = "txbPassword";
+            this.txbPassword.Size = new System.Drawing.Size(318, 20);
+            this.txbPassword.TabIndex = 4;
             // 
-            // label1
+            // lblResultado
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(149, 87);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "label1";
+            this.lblResultado.AutoSize = true;
+            this.lblResultado.Location = new System.Drawing.Point(93, 79);
+            this.lblResultado.Name = "lblResultado";
+            this.lblResultado.Size = new System.Drawing.Size(55, 13);
+            this.lblResultado.TabIndex = 5;
+            this.lblResultado.Text = "Resultado";
+            // 
+            // btnConexion
+            // 
+            this.btnConexion.Location = new System.Drawing.Point(12, 74);
+            this.btnConexion.Name = "btnConexion";
+            this.btnConexion.Size = new System.Drawing.Size(75, 23);
+            this.btnConexion.TabIndex = 6;
+            this.btnConexion.Text = "Conexion";
+            this.btnConexion.UseVisualStyleBackColor = true;
+            this.btnConexion.Click += new System.EventHandler(this.btnConexion_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnConexion);
+            this.Controls.Add(this.lblResultado);
+            this.Controls.Add(this.txbPassword);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.BtnAll);
+            this.Controls.Add(this.btnDate);
+            this.Controls.Add(this.btnTime);
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
@@ -108,12 +124,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnTime;
+        private System.Windows.Forms.Button btnDate;
+        private System.Windows.Forms.Button BtnAll;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.TextBox txbPassword;
+        private System.Windows.Forms.Label lblResultado;
+        private System.Windows.Forms.Button btnConexion;
     }
 }
 
