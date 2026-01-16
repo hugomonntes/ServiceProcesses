@@ -34,6 +34,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.lblPuerto = new System.Windows.Forms.Label();
             this.txbPuerto = new System.Windows.Forms.TextBox();
+            this.btnConectar = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // IP
@@ -73,11 +74,21 @@
             this.txbPuerto.Size = new System.Drawing.Size(204, 20);
             this.txbPuerto.TabIndex = 4;
             // 
+            // btnConectar
+            // 
+            this.btnConectar.Location = new System.Drawing.Point(97, 65);
+            this.btnConectar.Name = "btnConectar";
+            this.btnConectar.Size = new System.Drawing.Size(75, 23);
+            this.btnConectar.TabIndex = 5;
+            this.btnConectar.Text = "Conectar";
+            this.btnConectar.UseVisualStyleBackColor = true;
+            // 
             // FrmConexion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 64);
+            this.ClientSize = new System.Drawing.Size(270, 100);
+            this.Controls.Add(this.btnConectar);
             this.Controls.Add(this.txbPuerto);
             this.Controls.Add(this.lblPuerto);
             this.Controls.Add(this.txbIp);
@@ -96,5 +107,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.Label lblPuerto;
         public System.Windows.Forms.TextBox txbPuerto;
+        public System.Windows.Forms.Button btnConectar;
     }
 }

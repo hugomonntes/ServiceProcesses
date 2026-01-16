@@ -60,7 +60,7 @@ namespace EX1_CLIENTE
             return null; // TODO check
         }
 
-        public async void Buttons_click(object sender, EventArgs e)
+        public async void Buttons_click(object sender, EventArgs e) // TODO completar
         {
             string buttonContent = ((Button)sender).Text;
             string password = txbPassword.Text; // Hacer comprobaciones
@@ -74,6 +74,7 @@ namespace EX1_CLIENTE
             {
                 ip = frmConexion.txbIp.Text;
                 int.TryParse(frmConexion.txbPuerto.Text, out port); // TODO comprobar si esto tira excepcion o algo en caso de fallo o como gestionarlo
+                frmConexion.btnConectar.Click += async (sender2, e2) => { await DataManager(ip, port); };
             }
             frmConexion.ShowDialog();
         }
