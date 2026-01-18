@@ -21,43 +21,54 @@ namespace EX1_CLIENTE
             InitializeComponent();
         }
 
-        public static string ip;
-        public static int port;
+        public static string ip { set; get; } = "127.0.0.1";
+        public static int port { set; get; } = 9000;
 
-        public async Task<String> DataManager(string ip, int port) // Para validar IP utilizar la clase IPAdress tiene un tryparse
+        public async Task<String> DataManager(string comando, string password)
         {
-            if (ip != null && IPAddress.TryParse(ip, out IPAddress ipChecked))
+            if (!IPAddress.TryParse(ip, out IPAddress ipChecked))
             {
-                try
-                {
-                    using (Socket socketConnect = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
-                    {
-                        IPEndPoint iPEnd = new IPEndPoint(ipChecked, port);
-                        await socketConnect.ConnectAsync(iPEnd);
+                return "IP no válida";
+            }
 
-                        Encoding encoding = Console.OutputEncoding;
-                        using (NetworkStream network = new NetworkStream(socketConnect))
-                        using (StreamReader sr = new StreamReader(network, encoding))
-                        using (StreamWriter sw = new StreamWriter(network, encoding))
-                        {
-                            sw.AutoFlush = true;
-                            string message = await sr.ReadLineAsync();
-                            await sw.WriteLineAsync();
-                            message = await sr.ReadLineAsync();
-                            return message;
-                        }
+            try
+            {
+                using (Socket socket = new Socket(
+                    AddressFamily.InterNetwork,
+                    SocketType.Stream,
+                    ProtocolType.Tcp))
+                {
+                    await socket.ConnectAsync(ipChecked, port);
+
+                    using (NetworkStream network = new NetworkStream(socket))
+                    using (StreamReader sr = new StreamReader(network, Encoding.UTF8))
+                    using (StreamWriter sw = new StreamWriter(network, Encoding.UTF8))
+                    {
+                        sw.AutoFlush = true;
+
+                        await sw.WriteLineAsync(comando);
+                        await sw.WriteLineAsync(password);
+                        string comando2 = sr.ReadLine();
+                        string password2 = sr.ReadLine();
+
+
+                        string respuesta = await sr.ReadLineAsync();
+                        return respuesta ?? "Sin respuesta del servidor";
                     }
                 }
-                catch (Exception ex) when (ex is SocketException || ex is IOException)
-                {
-                    return ex.Message;
-                }
-                catch (Exception ex)
-                {
-                    return ex.Message;
-                }
             }
-            return null; // TODO check
+            catch (SocketException)
+            {
+                return "No se pudo conectar con el servidor";
+            }
+            catch (IOException)
+            {
+                return "Error de comunicación con el servidor";
+            }
+            catch (ObjectDisposedException)
+            {
+                return "Conexión cerrada inesperadamente";
+            }
         }
 
         public async void Buttons_click(object sender, EventArgs e) // TODO completar
@@ -90,7 +101,7 @@ namespace EX1_CLIENTE
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
     }
 }
