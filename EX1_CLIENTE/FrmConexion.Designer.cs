@@ -95,6 +95,7 @@
             this.Controls.Add(this.IP);
             this.Name = "FrmConexion";
             this.Text = "FrmConexion";
+            this.Load += new System.EventHandler(this.FrmConexion_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

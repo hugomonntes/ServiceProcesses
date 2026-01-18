@@ -53,7 +53,7 @@ namespace EX1_CLIENTE
 
 
                         string respuesta = await sr.ReadLineAsync();
-                        return respuesta ?? "Sin respuesta del servidor";
+                        return respuesta;
                     }
                 }
             }
@@ -71,32 +71,31 @@ namespace EX1_CLIENTE
             }
         }
 
-        public async void Buttons_click(object sender, EventArgs e) // TODO completar
+        private async void Buttons_Click(object sender, EventArgs e)
         {
-            string buttonContent = ((Button)sender).Text;
-            string password = txbPassword.Text; // Hacer comprobaciones
-            string message = await DataManager(ip, port);
+            Button btn = sender as Button;
+            string comando = btn.Text.ToString();
+            string password = txbPassword.Text;
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                lblResultado.Text = "Introduce una contraseña";
+            }
+
+            string resultado = await DataManager(comando, password);
+
+            lblResultado.Text = resultado;
         }
 
         private void btnConexion_Click(object sender, EventArgs e)
         {
-            FrmConexion frmConexion = new FrmConexion();
-            if (validationField(frmConexion.txbIp) && validationField(frmConexion.txbPuerto))
-            {
-                ip = frmConexion.txbIp.Text;
-                int.TryParse(frmConexion.txbPuerto.Text, out port); // TODO comprobar si esto tira excepcion o algo en caso de fallo o como gestionarlo
-                frmConexion.btnConectar.Click += async (sender2, e2) => { await DataManager(ip, port); };
-            }
-            frmConexion.ShowDialog();
-        }
+            FrmConexion frm = new FrmConexion();
 
-        private bool validationField(TextBox textBox)
-        {
-            if (textBox.Text.Trim() == null || textBox.Text.Trim() == "")
+            if (frm.ShowDialog() == DialogResult.OK)
             {
-                return false;
+                ip = frm.txbIp.Text;
+                port = int.Parse(frm.txbPuerto.Text);
             }
-            return true;
         }
 
         private void Form1_Load(object sender, EventArgs e)
