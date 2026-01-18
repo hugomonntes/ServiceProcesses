@@ -87,5 +87,10 @@ namespace EX1_CLIENTE
             }
             return true;
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
