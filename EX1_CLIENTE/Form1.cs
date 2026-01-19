@@ -21,39 +21,31 @@ namespace EX1_CLIENTE
             InitializeComponent();
         }
 
-        public static string ip { set; get; } = "127.0.0.1";
-        public static int port { set; get; } = 9000;
+        IPAddress ip = IPAddress.Parse("127.0.0.1");
+        int port = 9000;
 
-        public async Task<String> DataManager(string comando, string password)
+        public async Task<String> DataManager(string comando)
         {
-            if (!IPAddress.TryParse(ip, out IPAddress ipChecked))
-            {
-                return "IP no válida";
-            }
-
             try
             {
-                using (Socket socket = new Socket(
+                using (Socket conexion = new Socket(
                     AddressFamily.InterNetwork,
                     SocketType.Stream,
                     ProtocolType.Tcp))
                 {
-                    await socket.ConnectAsync(ipChecked, port);
+                    IPEndPoint ep = new IPEndPoint(ip, port);
+                    await conexion.ConnectAsync(ep);
 
-                    using (NetworkStream network = new NetworkStream(socket))
-                    using (StreamReader sr = new StreamReader(network, Console.OutputEncoding))
-                    using (StreamWriter sw = new StreamWriter(network, Console.OutputEncoding))
+                    Encoding codificacion = Console.OutputEncoding;
+                    using (NetworkStream ns = new NetworkStream(conexion))
+                    using (StreamReader sr = new StreamReader(ns, codificacion))
+                    using (StreamWriter sw = new StreamWriter(ns, codificacion))
                     {
                         sw.AutoFlush = true;
-
+                        string msg = await sr.ReadLineAsync();
                         await sw.WriteLineAsync(comando);
-                        string comando2 = sr.ReadLine();
-                        await sw.WriteLineAsync(password);
-                        string password2 = sr.ReadLine();
-
-
-                        string respuesta = await sr.ReadLineAsync();
-                        return respuesta;
+                        msg = await sr.ReadLineAsync();
+                        return msg;
                     }
                 }
             }
@@ -73,28 +65,58 @@ namespace EX1_CLIENTE
 
         private async void Buttons_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
-            string comando = btn.Text.ToString();
-            string password = txbPassword.Text;
-
-            if (string.IsNullOrWhiteSpace(password))
-            {
-                lblResultado.Text = "Introduce una contraseña";
-            }
-
-            string resultado = await DataManager(comando, password);
-
-            lblResultado.Text = resultado;
+            lblResultado.Text = $"Resultado:{await DataManager(((Button)sender).Text)}";
         }
 
         private void btnConexion_Click(object sender, EventArgs e)
         {
-            FrmConexion frm = new FrmConexion();
-
-            if (frm.ShowDialog() == DialogResult.OK)
+            FrmConexion form = new FrmConexion();
+            form.txbIp.Text = ip.ToString();
+            form.txbPuerto.Text = port.ToString();
+            bool flag = true;
+            DialogResult result;
+            result = form.ShowDialog();
+            if (result == DialogResult.Cancel)
             {
-                ip = frm.txbIp.Text;
-                port = int.Parse(frm.txbPuerto.Text);
+                MessageBox.Show("No se han guardado la Ip y Puerto", "OJO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (result == DialogResult.OK)
+            {
+                int puertoMaximo = IPEndPoint.MaxPort;
+                flag = true;
+                if (!IPAddress.TryParse(form.txbIp.Text, out IPAddress ipValidada))
+                {
+                    MessageBox.Show("Error con la IP", "IP NO VÁLIDA", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    flag = false;
+                }
+                if (!int.TryParse(form.txbPuerto.Text, out int puertoValidado))
+                {
+                    MessageBox.Show("Error en el puerto", "PUERTO NO VÁLIDO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    flag = false;
+                }
+                if (puertoValidado < 0 || puertoValidado > puertoMaximo)
+                {
+                    MessageBox.Show("Error puerto fuera de rango", "PUERTO NO VÁLIDO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    flag = false;
+                }
+                if (flag)
+                {
+                    ip = ipValidada;
+                    port = puertoValidado;
+                    lblResultado.Text = $"Ip:{ip.ToString()}, Puerto:{port.ToString()}";
+                }
+            }
+        }
+
+        private async void btnClose_Click(object sender, EventArgs e)
+        {
+            if (txbPassword.Text == "")
+            {
+                await DataManager("close");
+            }
+            else
+            {
+                await DataManager($"close {txbPassword.Text}");
             }
         }
 
