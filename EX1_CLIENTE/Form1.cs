@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace EX1_CLIENTE
 {
-    public partial class Form1 : Form
+    public partial class Form1 : Form // TODO me falta gestionar bien lo de contraseña y close
     {
         public Form1()
         {

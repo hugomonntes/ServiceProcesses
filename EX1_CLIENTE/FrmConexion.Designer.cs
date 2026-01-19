@@ -76,6 +76,7 @@
             // 
             // btnConectar
             // 
+            this.btnConectar.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnConectar.Location = new System.Drawing.Point(97, 65);
             this.btnConectar.Name = "btnConectar";
             this.btnConectar.Size = new System.Drawing.Size(75, 23);

@@ -126,7 +126,7 @@ namespace EX1_SERVIDOR
                         }
                         else
                         {
-                            sWriter.WriteLine("ERROR, comando no válido");
+                            sWriter.WriteLine("ERROR, comando no valido");
                         }
                     }
                     catch (Exception ex) when (ex is SocketException || ex is IOException)

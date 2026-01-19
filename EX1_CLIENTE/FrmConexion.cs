@@ -18,23 +18,6 @@ namespace EX1_CLIENTE
             InitializeComponent();
         }
 
-        private void btnConectar_Click(object sender, EventArgs e) // TODO hacer logica inversa y asociar a boton 
-        {
-            
-            if (!IPAddress.TryParse(txbIp.Text, out _))
-            {
-                MessageBox.Show("IP incorrecta");
-            }
-
-            if (!int.TryParse(txbPuerto.Text, out _))
-            {
-                MessageBox.Show("Puerto incorrecto");
-            }
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
         private void FrmConexion_Load(object sender, EventArgs e)
         {
 
