@@ -45,6 +45,7 @@
             this.btnTime.TabIndex = 0;
             this.btnTime.Text = "Time";
             this.btnTime.UseVisualStyleBackColor = true;
+            this.btnTime.Click += new System.EventHandler(this.Buttons_Click);
             // 
             // btnDate
             // 
@@ -54,6 +55,7 @@
             this.btnDate.TabIndex = 1;
             this.btnDate.Text = "Date";
             this.btnDate.UseVisualStyleBackColor = true;
+            this.btnDate.Click += new System.EventHandler(this.Buttons_Click);
             // 
             // BtnAll
             // 
@@ -63,6 +65,7 @@
             this.BtnAll.TabIndex = 2;
             this.BtnAll.Text = "All";
             this.BtnAll.UseVisualStyleBackColor = true;
+            this.BtnAll.Click += new System.EventHandler(this.Buttons_Click);
             // 
             // btnClose
             // 
@@ -72,6 +75,7 @@
             this.btnClose.TabIndex = 3;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.Buttons_Click);
             // 
             // txbPassword
             // 

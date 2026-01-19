@@ -41,14 +41,14 @@ namespace EX1_CLIENTE
                     await socket.ConnectAsync(ipChecked, port);
 
                     using (NetworkStream network = new NetworkStream(socket))
-                    using (StreamReader sr = new StreamReader(network, Encoding.UTF8))
-                    using (StreamWriter sw = new StreamWriter(network, Encoding.UTF8))
+                    using (StreamReader sr = new StreamReader(network, Console.OutputEncoding))
+                    using (StreamWriter sw = new StreamWriter(network, Console.OutputEncoding))
                     {
                         sw.AutoFlush = true;
 
                         await sw.WriteLineAsync(comando);
-                        await sw.WriteLineAsync(password);
                         string comando2 = sr.ReadLine();
+                        await sw.WriteLineAsync(password);
                         string password2 = sr.ReadLine();
 
 
