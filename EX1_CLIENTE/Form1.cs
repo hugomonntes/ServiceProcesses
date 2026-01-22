@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace EX1_CLIENTE
 {
-    public partial class Form1 : Form // TODO me falta gestionar bien lo de contraseña y close
+    public partial class Form1 : Form
     {
         public Form1()
         {
@@ -65,7 +65,23 @@ namespace EX1_CLIENTE
 
         private async void Buttons_Click(object sender, EventArgs e)
         {
-            lblResultado.Text = $"Resultado:{await DataManager(((Button)sender).Text)}";
+            if (((Button)sender).Name == "btnClose")
+            {
+                if (txbPassword.Text == "")
+                {
+                    await DataManager("close");
+                    lblResultado.Text = "Resultado: Introduce una password";
+                }
+                else
+                {
+                    await DataManager($"close {txbPassword.Text}");
+                    lblResultado.Text = "Resultado: Servidor Cerrado";
+                }
+            }
+            else
+            {
+                lblResultado.Text = $"Resultado: {await DataManager(((Button)sender).Text)}";
+            }
         }
 
         private void btnConexion_Click(object sender, EventArgs e)
@@ -105,18 +121,6 @@ namespace EX1_CLIENTE
                     port = puertoValidado;
                     lblResultado.Text = $"Ip:{ip.ToString()}, Puerto:{port.ToString()}";
                 }
-            }
-        }
-
-        private async void btnClose_Click(object sender, EventArgs e)
-        {
-            if (txbPassword.Text == "")
-            {
-                await DataManager("close");
-            }
-            else
-            {
-                await DataManager($"close {txbPassword.Text}");
             }
         }
 
