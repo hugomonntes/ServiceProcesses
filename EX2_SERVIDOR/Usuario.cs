@@ -8,7 +8,7 @@ namespace EX2_SERVIDOR
 {
     internal class Usuario
     {
-        private string nombre { get; set; }
+        public string nombre { get; set; }
         private string ip { get; set; }
         private StreamWriter StreamWriter { get; set; }
 

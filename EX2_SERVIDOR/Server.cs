@@ -11,10 +11,11 @@ namespace EX2_SERVIDOR
     internal class Server
     {
         private List<Usuario> usuarios = new List<Usuario>();
-        private int port;
-        private bool ServerIsRunning = false;
-        public static Socket socket;
-        public string userName;
+        private List<StreamWriter> streamWriters = new List<StreamWriter>();
+        private int port = 9000;
+        private bool ServerIsRunning = true;
+        public Socket socket;
+        public object lockObject = new object();
 
         public void Init()
         {
@@ -23,10 +24,12 @@ namespace EX2_SERVIDOR
             {
                 socket.Bind(endPoint);
                 socket.Listen(500); // TODO cambiar numero escuchas
+                Console.WriteLine("Server Running...");
                 do
                 {
                     Socket client = socket.Accept();
                     Thread thread = new Thread(() => ClientManager(client));
+                    thread.Start();
                 }
                 while (ServerIsRunning);
             }
@@ -63,7 +66,8 @@ namespace EX2_SERVIDOR
 
         public void Stop()
         {
-
+            socket.Close();
+            ServerIsRunning = false;
         }
 
         public void ClientManager(Socket socketClient)
@@ -78,7 +82,43 @@ namespace EX2_SERVIDOR
                     sw.AutoFlush = true;
                     try
                     {
-                        userName = sr.ReadLine();
+                        sw.WriteLine("Introduce tu nombre:");
+                        string userName = sr.ReadLine();
+                        Usuario usuario;
+                        lock (lockObject)
+                        {
+                            usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
+                            usuarios.Add(usuario);
+                        }
+                        while (true) // Creo que solo interesa salir del bucle si hacen exit
+                        {
+                            string msg = sr.ReadLine();
+                            streamWriters.Add(sw);
+                            foreach (StreamWriter writer in streamWriters)
+                            {
+                                if (writer != sw)
+                                {
+                                    writer.WriteLine($"{usuario.nombre}: {msg}");
+                                }
+                            }
+                            
+                            if (msg == "#exit")
+                            {
+                                lock (lockObject)
+                                {
+                                    usuarios.Remove(usuario);
+                                }
+                                socketClient.Close();
+                            }
+
+                            if (msg == "#list")
+                            {
+                                foreach (Usuario user in usuarios)
+                                {
+                                    sw.WriteLine(user.nombre);
+                                }
+                            }
+                        }
                     }
                     catch (Exception)
                     {
