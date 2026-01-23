@@ -33,7 +33,7 @@ namespace EX2_SERVIDOR
                 while (ServerIsRunning);
             }
         }
-
+        
         public int getFreePort(int initialPort) // Comprobar Maxport
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, initialPort);
