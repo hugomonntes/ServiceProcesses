@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace EX2_SERVIDOR
 {
-    internal class Server // TODO ojo con el cierre forzado de un cliente queda en bucle infinito(corregido)
+    internal class Server
     {
         private List<Usuario> usuarios = new List<Usuario>();
-        private int port = 9000;
+        private readonly int port = 9000;
         private bool ServerIsRunning = true;
         public Socket socket;
         public object lockUsers = new object();
 
         public void Init()
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, getFreePort(port));
             using (socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 socket.Bind(endPoint);
@@ -27,39 +27,34 @@ namespace EX2_SERVIDOR
                 do
                 {
                     Socket client = socket.Accept();
-                    Thread thread = new Thread(() => ClientManager(client));
+                    Thread thread = new Thread(() => RequestManager(client));
                     thread.Start();
                 }
                 while (ServerIsRunning);
             }
         }
 
-        public int isFreePort(int port)
+        public int getFreePort(int initialPort) // Comprobar Maxport
         {
-            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, port);
+            IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, initialPort);
             using (socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
-                bool isFree = true;
+                bool isFree = false;
                 do
                 {
                     try
                     {
                         socket.Bind(endPoint);
                         socket.Listen(1);
-                    }
-                    catch (SocketException s) when (s.SocketErrorCode == SocketError.AddressAlreadyInUse) // TODO OJO utilizo propiedad socketError no ErrorCode
-                    {
-                        port++;
-                        isFree = false;
+                        isFree = true;
                     }
                     catch (SocketException)
                     {
-                        port++;
-                        isFree = false;
+                        initialPort++;
                     }
                 }
                 while (!isFree);
-                return port;
+                return initialPort;
             }
         }
 
@@ -69,14 +64,12 @@ namespace EX2_SERVIDOR
             ServerIsRunning = false;
         }
 
-        public void ClientManager(Socket socketClient) // Hacer inyeccion streamwriter fuera del bucle, controlar hilos,
-                                                       // corregir si se escibre un commando no enviar por chat, OJO si un user
-                                                       // se sale con texot excrito cierra conexion del server
+        public void RequestManager(Socket requestSocket)
         {
-            using (socketClient)
+            using (requestSocket)
             {
-                IPEndPoint clientEndPoint = (IPEndPoint)socketClient.RemoteEndPoint;
-                using (NetworkStream network = new NetworkStream(socketClient))
+                IPEndPoint clientEndPoint = (IPEndPoint)requestSocket.RemoteEndPoint;
+                using (NetworkStream network = new NetworkStream(requestSocket))
                 using (StreamWriter sw = new StreamWriter(network, Console.OutputEncoding))
                 using (StreamReader sr = new StreamReader(network, Console.OutputEncoding))
                 {
@@ -86,54 +79,43 @@ namespace EX2_SERVIDOR
                     {
                         sw.WriteLine("Introduce tu nombre:");
                         string userName = sr.ReadLine();
-                        Usuario usuario;
-                        lock (lockUsers)
-                        {
-                            usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
-                            usuarios.Add(usuario);
-                        }
+
+                        Usuario usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
+                        usuarios.Add(usuario);
+                        BroadcastMessage(usuario,$"{usuario.nombre} se ha unido al chat");
+
                         while (isConnected)
                         {
                             string msg = sr.ReadLine();
                             if (msg == null)
                             {
-                                isConnected = false;
+                                isConnected = false; // No puedo hacer así si no me desconecta a todos porque lo tengo en el while
                             }
-
-                            lock (lockUsers)
-                            {
-                                if (isConnected)
-                                {
-                                    foreach (Usuario user in usuarios)
-                                    {
-                                        if (user.StreamWriter != sw)
-                                        {
-                                            user.StreamWriter.WriteLine($"{usuario.nombre}: {msg}");
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (msg == "#exit")
+                            else
                             {
                                 lock (lockUsers)
                                 {
-                                    if (isConnected)
+                                    switch (msg)
                                     {
-                                        usuarios.Remove(usuario);
+                                        case "#list":
+                                            foreach (Usuario user in usuarios)
+                                            {
+                                                sw.WriteLine($"Conectado: {user.nombre}");
+                                            }
+                                            break;
+                                        case "#exit":
+                                            usuarios.Remove(usuario);
+                                            requestSocket.Close();
+                                            isConnected = false;
+                                            BroadcastMessage(usuario,$"{usuario.nombre} ha dejado el chat");
+                                            break;
+                                        default:
+                                            BroadcastMessage(usuario,$"{usuario.nombre}: {msg}");
+                                            break;
                                     }
                                 }
-                                socketClient.Close();
-                                isConnected = false;
                             }
 
-                            if (msg == "#list")
-                            {
-                                foreach (Usuario user in usuarios)
-                                {
-                                    sw.WriteLine($"Conectado: {user.nombre}");
-                                }
-                            }
                         }
                     }
                     catch (Exception)
@@ -143,5 +125,17 @@ namespace EX2_SERVIDOR
                 }
             }
         }
+
+        public void BroadcastMessage(Usuario sender, string msg)
+        {
+            foreach (Usuario user in usuarios)
+            {
+                if (user.StreamWriter != sender.StreamWriter)
+                {
+                    user.StreamWriter.WriteLine(msg);
+                }
+            }
+        }
+
     }
 }
