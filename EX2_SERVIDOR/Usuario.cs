@@ -10,7 +10,7 @@ namespace EX2_SERVIDOR
     {
         public string nombre { get; set; }
         private string ip { get; set; }
-        private StreamWriter StreamWriter { get; set; }
+        public StreamWriter StreamWriter { get; set; }
 
         public Usuario(string nombre, string ip, StreamWriter streamWriter)
         {

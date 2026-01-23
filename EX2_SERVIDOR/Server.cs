@@ -8,14 +8,13 @@ using System.Threading.Tasks;
 
 namespace EX2_SERVIDOR
 {
-    internal class Server
+    internal class Server // TODO ojo con el cierre forzado de un cliente queda en bucle infinito(corregido)
     {
         private List<Usuario> usuarios = new List<Usuario>();
-        private List<StreamWriter> streamWriters = new List<StreamWriter>();
         private int port = 9000;
         private bool ServerIsRunning = true;
         public Socket socket;
-        public object lockObject = new object();
+        public object lockUsers = new object();
 
         public void Init()
         {
@@ -70,7 +69,8 @@ namespace EX2_SERVIDOR
             ServerIsRunning = false;
         }
 
-        public void ClientManager(Socket socketClient)
+        public void ClientManager(Socket socketClient) // Hacer inyeccion streamwriter fuera del bucle, controlar hilos,
+                                                       // corregir si se escibre un commando no enviar por chat
         {
             using (socketClient)
             {
@@ -85,7 +85,7 @@ namespace EX2_SERVIDOR
                         sw.WriteLine("Introduce tu nombre:");
                         string userName = sr.ReadLine();
                         Usuario usuario;
-                        lock (lockObject)
+                        lock (lockUsers)
                         {
                             usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
                             usuarios.Add(usuario);
@@ -93,22 +93,30 @@ namespace EX2_SERVIDOR
                         while (true) // Creo que solo interesa salir del bucle si hacen exit
                         {
                             string msg = sr.ReadLine();
-                            streamWriters.Add(sw);
-                            foreach (StreamWriter writer in streamWriters)
+                            if (msg == null)
                             {
-                                if (writer != sw)
+                                break;
+                            }
+
+                            lock (lockUsers)
+                            {
+                                foreach (Usuario user in usuarios)
                                 {
-                                    writer.WriteLine($"{usuario.nombre}: {msg}");
+                                    if (user.StreamWriter != sw)
+                                    {
+                                        user.StreamWriter.WriteLine($"{usuario.nombre}: {msg}");
+                                    }
                                 }
                             }
-                            
+
                             if (msg == "#exit")
                             {
-                                lock (lockObject)
+                                lock (lockUsers)
                                 {
                                     usuarios.Remove(usuario);
                                 }
                                 socketClient.Close();
+                                break; // Para salir del while true (Cambiar si curro no le gusta)
                             }
 
                             if (msg == "#list")
