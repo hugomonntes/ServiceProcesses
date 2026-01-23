@@ -70,7 +70,8 @@ namespace EX2_SERVIDOR
         }
 
         public void ClientManager(Socket socketClient) // Hacer inyeccion streamwriter fuera del bucle, controlar hilos,
-                                                       // corregir si se escibre un commando no enviar por chat
+                                                       // corregir si se escibre un commando no enviar por chat, OJO si un user
+                                                       // se sale con texot excrito cierra conexion del server
         {
             using (socketClient)
             {
@@ -80,6 +81,7 @@ namespace EX2_SERVIDOR
                 using (StreamReader sr = new StreamReader(network, Console.OutputEncoding))
                 {
                     sw.AutoFlush = true;
+                    bool isConnected = true;
                     try
                     {
                         sw.WriteLine("Introduce tu nombre:");
@@ -90,21 +92,24 @@ namespace EX2_SERVIDOR
                             usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
                             usuarios.Add(usuario);
                         }
-                        while (true) // Creo que solo interesa salir del bucle si hacen exit
+                        while (isConnected)
                         {
                             string msg = sr.ReadLine();
                             if (msg == null)
                             {
-                                break;
+                                isConnected = false;
                             }
 
                             lock (lockUsers)
                             {
-                                foreach (Usuario user in usuarios)
+                                if (isConnected)
                                 {
-                                    if (user.StreamWriter != sw)
+                                    foreach (Usuario user in usuarios)
                                     {
-                                        user.StreamWriter.WriteLine($"{usuario.nombre}: {msg}");
+                                        if (user.StreamWriter != sw)
+                                        {
+                                            user.StreamWriter.WriteLine($"{usuario.nombre}: {msg}");
+                                        }
                                     }
                                 }
                             }
@@ -113,17 +118,20 @@ namespace EX2_SERVIDOR
                             {
                                 lock (lockUsers)
                                 {
-                                    usuarios.Remove(usuario);
+                                    if (isConnected)
+                                    {
+                                        usuarios.Remove(usuario);
+                                    }
                                 }
                                 socketClient.Close();
-                                break; // Para salir del while true (Cambiar si curro no le gusta)
+                                isConnected = false;
                             }
 
                             if (msg == "#list")
                             {
                                 foreach (Usuario user in usuarios)
                                 {
-                                    sw.WriteLine(user.nombre);
+                                    sw.WriteLine($"Conectado: {user.nombre}");
                                 }
                             }
                         }
