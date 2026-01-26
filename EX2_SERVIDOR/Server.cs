@@ -23,7 +23,7 @@ namespace EX2_SERVIDOR
             {
                 socket.Bind(endPoint);
                 socket.Listen(500); // TODO cambiar numero escuchas
-                Console.WriteLine("Server Running....");
+                Console.WriteLine($"Server Running in port {port}....");
                 do
                 {
                     Socket client = socket.Accept();
@@ -33,7 +33,7 @@ namespace EX2_SERVIDOR
                 while (ServerIsRunning);
             }
         }
-        
+
         public int getFreePort(int initialPort) // Comprobar Maxport
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, initialPort);
@@ -79,17 +79,20 @@ namespace EX2_SERVIDOR
                     {
                         sw.WriteLine("Introduce tu nombre:");
                         string userName = sr.ReadLine();
-
-                        Usuario usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
-                        usuarios.Add(usuario);
-                        BroadcastMessage(usuario,$"{usuario.nombre} se ha unido al chat");
+                        Usuario usuario;
+                        lock (lockUsers)
+                        {
+                            usuario = new Usuario(userName, clientEndPoint.Address.ToString(), sw);
+                            usuarios.Add(usuario);
+                            BroadcastMessage(usuario, $"{usuario.nombre} se ha unido al chat");
+                        }
 
                         while (isConnected)
                         {
                             string msg = sr.ReadLine();
                             if (msg == null)
                             {
-                                isConnected = false; // TODO OJO con cerrado abrupto cierra todos dsps hacer lock o algo 
+                                isConnected = false; 
                             }
                             else
                             {
@@ -107,10 +110,10 @@ namespace EX2_SERVIDOR
                                             usuarios.Remove(usuario);
                                             requestSocket.Close();
                                             isConnected = false;
-                                            BroadcastMessage(usuario,$"{usuario.nombre} ha dejado el chat");
+                                            BroadcastMessage(usuario, $"{usuario.nombre} ha dejado el chat");
                                             break;
                                         default:
-                                            BroadcastMessage(usuario,$"{usuario.nombre}: {msg}");
+                                            BroadcastMessage(usuario, $"{usuario.nombre}: {msg}");
                                             break;
                                     }
                                 }
