@@ -89,7 +89,7 @@ namespace EX2_SERVIDOR
                             string msg = sr.ReadLine();
                             if (msg == null)
                             {
-                                isConnected = false;
+                                isConnected = false; // TODO OJO con cerrado abrupto cierra todos dsps hacer lock o algo 
                             }
                             else
                             {
