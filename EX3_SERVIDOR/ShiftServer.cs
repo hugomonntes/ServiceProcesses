@@ -13,7 +13,7 @@ namespace EX3_SERVIDOR
         string[] users;
         List<string> waitQueue = new List<string>();
 
-        public void readNames(string path)
+        public void ReadNames(string path)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace EX3_SERVIDOR
             }
         }
 
-        public int readPin(string path)
+        public int ReadPin(string path)
         {
             string pin = "";
             try
@@ -50,7 +50,7 @@ namespace EX3_SERVIDOR
             return int.Parse(pin) | -1;
         }
 
-        public bool isFreePort(int port)
+        public bool IsFreePort(int port)
         {
             IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Any, port);
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
@@ -68,7 +68,7 @@ namespace EX3_SERVIDOR
             }
         }
 
-        public int getFreePort(int initialPort)
+        public int GetFreePort(int initialPort)
         {
             IPEndPoint iP = new IPEndPoint(IPAddress.Any, initialPort);
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
@@ -95,10 +95,11 @@ namespace EX3_SERVIDOR
         public void Init()
         {
             int port = 31416;
-            if (isFreePort(port))
+            if (!IsFreePort(port))
             {
-                port = getFreePort(1024);
+                port = GetFreePort(1024);
             }
+            ReadNames($"{Environment.GetEnvironmentVariable("userprofile")}\\usuarios.txt");
         }
     }
 }

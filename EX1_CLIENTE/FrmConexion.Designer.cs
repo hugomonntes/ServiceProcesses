@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConexion));
             this.IP = new System.Windows.Forms.Label();
             this.txbIp = new System.Windows.Forms.TextBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -94,8 +95,9 @@
             this.Controls.Add(this.lblPuerto);
             this.Controls.Add(this.txbIp);
             this.Controls.Add(this.IP);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmConexion";
-            this.Text = "FrmConexion";
+            this.Text = "Conexion";
             this.Load += new System.EventHandler(this.FrmConexion_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

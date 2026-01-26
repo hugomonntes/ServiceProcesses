@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EX1_CLIENTE
+namespace EX1_CLIENTE//Titulo, icono. Acceptbutton en  sec.
 {
     public partial class Form1 : Form
     {

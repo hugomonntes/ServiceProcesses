@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnTime = new System.Windows.Forms.Button();
             this.btnDate = new System.Windows.Forms.Button();
             this.BtnAll = new System.Windows.Forms.Button();
@@ -115,8 +116,9 @@
             this.Controls.Add(this.BtnAll);
             this.Controls.Add(this.btnDate);
             this.Controls.Add(this.btnTime);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "FECHA Y HORA";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

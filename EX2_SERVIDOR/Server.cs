@@ -11,7 +11,7 @@ namespace EX2_SERVIDOR
     internal class Server
     {
         private List<Usuario> usuarios = new List<Usuario>();
-        private readonly int port = 9000;
+        private readonly int port = 9001;
         private bool ServerIsRunning = true;
         public Socket socket;
         public object lockUsers = new object();
@@ -23,7 +23,7 @@ namespace EX2_SERVIDOR
             {
                 socket.Bind(endPoint);
                 socket.Listen(500); // TODO cambiar numero escuchas
-                Console.WriteLine("Server Running...");
+                Console.WriteLine("Server Running....");
                 do
                 {
                     Socket client = socket.Accept();
@@ -89,7 +89,7 @@ namespace EX2_SERVIDOR
                             string msg = sr.ReadLine();
                             if (msg == null)
                             {
-                                isConnected = false; // No puedo hacer así si no me desconecta a todos porque lo tengo en el while
+                                isConnected = false;
                             }
                             else
                             {
