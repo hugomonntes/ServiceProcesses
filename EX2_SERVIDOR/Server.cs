@@ -6,20 +6,19 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EX2_SERVIDOR
+namespace EX2_SERVIDOR//Control cierre abrupto
 {
     internal class Server
     {
         private List<Usuario> usuarios = new List<Usuario>();
         private readonly int port = 9001;
         private bool ServerIsRunning = true;
-        public Socket socket;
         public object lockUsers = new object();
 
         public void Init()
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, getFreePort(port));
-            using (socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 socket.Bind(endPoint);
                 socket.Listen(500); // TODO cambiar numero escuchas
@@ -37,7 +36,7 @@ namespace EX2_SERVIDOR
         public int getFreePort(int initialPort) // Comprobar Maxport
         {
             IPEndPoint endPoint = new IPEndPoint(IPAddress.Any, initialPort);
-            using (socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
             {
                 bool isFree = false;
                 do
@@ -58,7 +57,7 @@ namespace EX2_SERVIDOR
             }
         }
 
-        public void Stop()
+        public void Stop(Socket socket)
         {
             socket.Close();
             ServerIsRunning = false;
@@ -92,36 +91,41 @@ namespace EX2_SERVIDOR
                             string msg = sr.ReadLine();
                             if (msg == null)
                             {
-                                isConnected = false; 
+                                isConnected = false;
                             }
                             else
                             {
-                                lock (lockUsers)
+                                switch (msg)
                                 {
-                                    switch (msg)
-                                    {
-                                        case "#list":
+                                    case "#list":
+                                        lock (lockUsers)
+                                        {
                                             foreach (Usuario user in usuarios)
                                             {
                                                 sw.WriteLine($"Conectado: {user.nombre}");
                                             }
-                                            break;
-                                        case "#exit":
+                                        }
+                                        break;
+                                    case "#exit":
+                                        lock (lockUsers)
+                                        {
                                             usuarios.Remove(usuario);
                                             requestSocket.Close();
                                             isConnected = false;
                                             BroadcastMessage(usuario, $"{usuario.nombre} ha dejado el chat");
-                                            break;
-                                        default:
+                                        }
+                                        break;
+                                    default:
+                                        lock (lockUsers)
+                                        {
                                             BroadcastMessage(usuario, $"{usuario.nombre}: {msg}");
-                                            break;
-                                    }
+                                        }
+                                        break;
                                 }
                             }
-
                         }
                     }
-                    catch (Exception)
+                    catch (IOException)
                     {
 
                     }
@@ -131,11 +135,14 @@ namespace EX2_SERVIDOR
 
         public void BroadcastMessage(Usuario sender, string msg)
         {
-            foreach (Usuario user in usuarios)
+            lock (lockUsers)
             {
-                if (user.StreamWriter != sender.StreamWriter)
+                foreach (Usuario user in usuarios)
                 {
-                    user.StreamWriter.WriteLine(msg);
+                    if (user.StreamWriter != sender.StreamWriter)
+                    {
+                        user.StreamWriter.WriteLine(msg);
+                    }
                 }
             }
         }
