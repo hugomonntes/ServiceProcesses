@@ -12,6 +12,7 @@ namespace EX3_SERVIDOR
     {
         string[] users;
         List<string> waitQueue = new List<string>();
+        int port = 31416;
 
         public void ReadNames(string path)
         {
@@ -92,14 +93,16 @@ namespace EX3_SERVIDOR
             }
         }
 
+
         public void Init()
         {
-            int port = 31416;
             if (!IsFreePort(port))
             {
                 port = GetFreePort(1024);
             }
-            ReadNames($"{Environment.GetEnvironmentVariable("userprofile")}\\usuarios.txt");
+            Console.WriteLine("Puerto: " + port);
+            //ReadNames($"{Environment.GetEnvironmentVariable("userprofile")}\\usuarios.txt");
+
         }
     }
 }
