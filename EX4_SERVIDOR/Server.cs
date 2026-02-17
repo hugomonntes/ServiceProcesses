@@ -1,11 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
 using System.Text;
 
 namespace EX4_SERVIDOR
 {
     internal class Server
     {
+        int Port = GetFreePort(31416);
+        Socket socketServer;
+        public void Init()
+        {
+            IPEndPoint ip = new IPEndPoint(IPAddress.Any, Port);
+            using (socketServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+            {
+                socketServer.Bind(ip);
+                socketServer.Listen(100);
+            }
+        }
+
+        public static int GetFreePort(int defaultPort)
+        {
+            bool isFree = false;
+            IPEndPoint iP = new IPEndPoint(IPAddress.Any, defaultPort);
+            while (!isFree && defaultPort <= IPEndPoint.MaxPort)
+            {
+                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    try
+                    {
+                        socket.Bind(iP);
+                        socket.Listen(1);
+                        isFree = true;
+                    }
+                    catch (SocketException)
+                    {
+                        defaultPort++;
+                    }
+                }
+            }
+            return defaultPort;
+        }
+
         public static string[] ReadFile(string path)
         {
             try
