@@ -10,6 +10,7 @@ namespace EX4_SERVIDOR
     {
         int Port = GetFreePort(31416);
         Socket socketServer;
+        bool serverIsRunning = true;
         public void Init()
         {
             IPEndPoint ip = new IPEndPoint(IPAddress.Any, Port);
@@ -17,6 +18,42 @@ namespace EX4_SERVIDOR
             {
                 socketServer.Bind(ip);
                 socketServer.Listen(100);
+                while (serverIsRunning)
+                {
+                    try
+                    {
+                        Socket client = socketServer.Accept();
+                        Thread thread = new Thread(() => RequestManager(client));
+                        thread.Start();
+                    }
+                    catch (SocketException) { }
+                }
+            }
+        }
+
+        public void Stop()
+        {
+            socketServer.Close();
+            serverIsRunning = false;
+        }
+
+        public void RequestManager(Socket socketClient)
+        {
+            using (socketClient)
+            {
+                IPEndPoint iP = (IPEndPoint)socketClient.RemoteEndPoint;
+                using (NetworkStream nw = new NetworkStream(socketClient))
+                using (StreamReader sr = new StreamReader(nw, Console.OutputEncoding))
+                using (StreamWriter sw = new StreamWriter(nw, Console.OutputEncoding))
+                {
+                    sw.WriteLine("Introduce un comando (gw | sw | gr | sr + record | close + clave): ");
+                    try
+                    {
+                        string command = sr.ReadLine();
+
+                    }
+                    catch (IOException) { }
+                }
             }
         }
 
