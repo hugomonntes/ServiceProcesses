@@ -50,7 +50,23 @@ namespace EX4_SERVIDOR
                     try
                     {
                         string command = sr.ReadLine();
-
+                        if (command != null)
+                        {
+                            string[] commandSplited = command.Split(" "); // Cuidado tamaños o outesception o index
+                            switch (commandSplited[0])
+                            {
+                                case "gw":
+                                    break;
+                                case "sw":
+                                    break;
+                                case "gr":
+                                    break;
+                                case "sr":
+                                    break;
+                                case "close":
+                                    break;
+                            }
+                        }
                     }
                     catch (IOException) { }
                 }
