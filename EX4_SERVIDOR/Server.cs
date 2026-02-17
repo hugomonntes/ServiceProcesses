@@ -21,13 +21,29 @@ namespace EX4_SERVIDOR
             }
         }
 
-        public static string[] parseToUpper(string[] words)
+        public static string[] ParseToUpper(string[] words)
         {
             for (int i = 0; i < words.Length; i++)
             {
                 words[i] = words[i].ToUpper();
             }
             return words;
+        }
+
+        public static List<Record> ReadBinaryFile(string path)
+        {
+            List<Record> records = new List<Record>();
+            using (FileStream fs = new FileStream(path, FileMode.Open))
+            using (BinaryReader br = new BinaryReader(fs))
+            {
+                while (br.BaseStream.Position < br.BaseStream.Length)
+                {
+                    string nombre = br.ReadString();
+                    int cantidadSegundos = br.ReadInt32();
+                    records.Add(new Record(nombre, cantidadSegundos));
+                }
+            }
+            return records;
         }
     }
 }
