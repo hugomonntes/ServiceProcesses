@@ -331,7 +331,6 @@ namespace EX3_SERVIDOR
                             }
                         }
                         break;
-
                     default:
                         sw.WriteLine("Comando no válido");
                         break;
