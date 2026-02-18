@@ -11,6 +11,9 @@ namespace EX4_SERVIDOR
         int Port = GetFreePort(31416);
         Socket socketServer;
         bool serverIsRunning = true;
+        List<string> words;
+        string pathFile = $"{Environment.GetEnvironmentVariable("userprofile")}\\lista.txt";
+
         public void Init()
         {
             IPEndPoint ip = new IPEndPoint(IPAddress.Any, Port);
@@ -29,6 +32,7 @@ namespace EX4_SERVIDOR
                     catch (SocketException) { }
                 }
             }
+            words = ParseToUpper(ReadFile(pathFile)).ToList();
         }
 
         public void Stop()
@@ -46,24 +50,51 @@ namespace EX4_SERVIDOR
                 using (StreamReader sr = new StreamReader(nw, Console.OutputEncoding))
                 using (StreamWriter sw = new StreamWriter(nw, Console.OutputEncoding))
                 {
-                    sw.WriteLine("Introduce un comando (gw | sw | gr | sr + record | close + clave): ");
+                    sw.AutoFlush = true;
+                    sw.WriteLine("Introduce un comando (gw | sw + palabra | gr | sr + record | close + clave): ");
                     try
                     {
                         string command = sr.ReadLine();
                         if (command != null)
                         {
-                            string[] commandSplited = command.Split(" "); // Cuidado tamaños o outesception o index
+                            string[] commandSplited = command.Split(" ");
                             switch (commandSplited[0])
                             {
                                 case "gw":
+                                    sw.WriteLine(words[GetRandomNumber(words.Count)]);
                                     break;
                                 case "sw":
+                                    if (commandSplited.Length == 2)
+                                    {
+                                        if (SaveOnFile(commandSplited[1], pathFile))
+                                        {
+                                            words.Add(commandSplited[1]);
+                                            sw.WriteLine("OK");
+                                        }
+                                        else
+                                        {
+                                            sw.WriteLine("ERROR");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        sw.WriteLine("ERROR");
+                                    }
                                     break;
                                 case "gr":
+
                                     break;
                                 case "sr":
+                                    if (commandSplited.Length == 2)
+                                    {
+
+                                    }
                                     break;
                                 case "close":
+                                    if (commandSplited.Length == 2)
+                                    {
+
+                                    }
                                     break;
                             }
                         }
@@ -134,6 +165,28 @@ namespace EX4_SERVIDOR
                 }
             }
             return records;
+        }
+
+        static Random random = new Random();
+        public static int GetRandomNumber(int limit)
+        {
+            return random.Next(limit);
+        }
+
+        public bool SaveOnFile(string word, string pathFile)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(pathFile, true))
+                {
+                    sw.Write($",{word}");
+                }
+            }
+            catch (IOException e)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
