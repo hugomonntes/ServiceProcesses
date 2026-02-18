@@ -12,7 +12,10 @@ namespace EX4_SERVIDOR
         Socket socketServer;
         bool serverIsRunning = true;
         List<string> words;
+        List<Record> records;
         string pathFile = $"{Environment.GetEnvironmentVariable("userprofile")}\\lista.txt";
+        string pathFileRecords = $"{Environment.GetEnvironmentVariable("userprofile")}\\records.txt";
+        object lockListas = new object();
 
         public void Init()
         {
@@ -61,19 +64,25 @@ namespace EX4_SERVIDOR
                             switch (commandSplited[0])
                             {
                                 case "gw":
-                                    sw.WriteLine(words[GetRandomNumber(words.Count)]);
+                                    lock (lockListas)
+                                    {
+                                        sw.WriteLine(words[GetRandomNumber(words.Count)]);
+                                    }
                                     break;
                                 case "sw":
                                     if (commandSplited.Length == 2)
                                     {
-                                        if (SaveOnFile(commandSplited[1], pathFile))
+                                        lock (lockListas)
                                         {
-                                            words.Add(commandSplited[1]);
-                                            sw.WriteLine("OK");
-                                        }
-                                        else
-                                        {
-                                            sw.WriteLine("ERROR");
+                                            if (SaveOnFile(commandSplited[1], pathFile))
+                                            {
+                                                words.Add(commandSplited[1]);
+                                                sw.WriteLine("OK");
+                                            }
+                                            else
+                                            {
+                                                sw.WriteLine("ERROR");
+                                            }
                                         }
                                     }
                                     else
@@ -82,18 +91,37 @@ namespace EX4_SERVIDOR
                                     }
                                     break;
                                 case "gr":
-
+                                    lock (lockListas)
+                                    {
+                                        records = ReadBinaryFile(pathFileRecords);
+                                        foreach (Record record in records)
+                                        {
+                                            sw.WriteLine($"{record.nombre} - {record.cantidadSegundos}");
+                                        }
+                                    }
                                     break;
                                 case "sr":
                                     if (commandSplited.Length == 2)
-                                    {
-
+                                    { // TDO trycatch
+                                        sw.WriteLine("Introduce nombre: ");
+                                        string nombre = sr.ReadLine();
+                                        sw.WriteLine("Introduce el tiempo: ");
+                                        int tiempo = int.Parse(sr.ReadLine());
+                                        Record record = new Record(nombre, tiempo);
+                                        if (WriteRecords(record, pathFileRecords))
+                                        {
+                                            sw.WriteLine("ACCEPT");
+                                        }
+                                        else
+                                        {
+                                            sw.WriteLine("REJECT");
+                                        }
                                     }
                                     break;
                                 case "close":
                                     if (commandSplited.Length == 2)
                                     {
-
+                                        Stop();
                                     }
                                     break;
                             }
@@ -154,17 +182,54 @@ namespace EX4_SERVIDOR
         public static List<Record> ReadBinaryFile(string path)
         {
             List<Record> records = new List<Record>();
-            using (FileStream fs = new FileStream(path, FileMode.Open))
-            using (BinaryReader br = new BinaryReader(fs))
+            try
             {
-                while (br.BaseStream.Position < br.BaseStream.Length)
+                using (FileStream fs = new FileStream(path, FileMode.Open))
+                using (BinaryReader br = new BinaryReader(fs))
                 {
-                    string nombre = br.ReadString();
-                    int cantidadSegundos = br.ReadInt32();
-                    records.Add(new Record(nombre, cantidadSegundos));
+                    while (br.BaseStream.Position < br.BaseStream.Length)
+                    {
+                        string nombre = br.ReadString();
+                        int cantidadSegundos = br.ReadInt32();
+                        records.Add(new Record(nombre, cantidadSegundos));
+                    }
+                }
+            }
+            catch (IOException) { }
+            return records;
+        }
+
+        public List<Record> AddRecord(List<Record> records, Record recordToCompare)
+        {
+            for (int i = 0; i < records.Count; i++)
+            {
+                if (records[i].cantidadSegundos > recordToCompare.cantidadSegundos)
+                {
+                    records[i] = recordToCompare;
                 }
             }
             return records;
+        }
+
+        public bool WriteRecords(Record record, string path)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
+                using (BinaryWriter bw = new BinaryWriter(fs))
+                {
+                    AddRecord(records, record);
+                    foreach (Record recorda in records)
+                    {
+                        bw.Write($"{recorda.nombre} {recorda.cantidadSegundos}");
+                    }
+                }
+            }
+            catch (IOException)
+            {
+                return false;
+            }
+            return true;
         }
 
         static Random random = new Random();

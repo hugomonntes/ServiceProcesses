@@ -7,7 +7,17 @@ namespace EX4_SERVIDOR
     internal class Record
     {
         public string nombre;
-        private string Nombre { get; set; }
+        private string Nombre
+        {
+            set
+            {
+                nombre = value.Substring(0,3);
+            }
+            get
+            {
+                return nombre; 
+            }
+        }
 
         public int cantidadSegundos;
         private int CantidadSegundos { get; set; }
